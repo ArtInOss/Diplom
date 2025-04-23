@@ -3,23 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профіль користувача</title>
+    <title>Основная страница</title>
     <!-- Подключение Bootstrap 4 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Подключение иконок Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <!-- Подключение кастомного стиля -->
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/user.css" rel="stylesheet">
+    <!-- Подключение Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB74LZuu7I8NegZO_V_5Xhif3LxQd5vALY&callback=initMap" async defer></script>
 </head>
 <body>
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="card p-4" style="width: 100%; max-width: 400px;">
-        <h2 class="text-center">Вітаємо, користувач!</h2>
-        <p class="text-center">Ви успішно увійшли на сторінку користувача.</p>
-        <button onclick="logout()" class="btn btn-danger btn-block">Вийти</button>
+
+<header class="d-flex justify-content-between align-items-center p-3">
+    <div class="d-flex align-items-center">
+        <!-- Логотип и текст -->
+        <img src="favicon-96x96.png" alt="EVCharge Logo" class="logo mr-2">
+        <span class="logo-text">EVCharge</span>
     </div>
+    <div class="d-flex flex-column flex-md-row align-items-end">
+        <button class="btn btn-primary" id="locationButton"><i class="fas fa-map-marker-alt icon-btn"></i>Моє місцеположення</button>
+        <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
+
+    </div>
+</header>
+
+<div class="sidebar">
+    <a href="#"><i class="fas fa-user icon-btn"></i>Профіль</a>
+    <a href="#"><i class="fas fa-filter icon-btn"></i>Фільтр</a>
+    <a href="#"><i class="fas fa-headset icon-btn"></i>Підтримка</a>
+    <a href="#"><i class="fas fa-shield-alt icon-btn"></i>Політика конфіденційності</a>
+    <a href="#"><i class="fas fa-question-circle icon-btn"></i>FAQ</a>
 </div>
 
-<script src="js/authorization.js"></script>
+<!-- Желтая область для карты -->
+<div id="map"></div> <!-- Здесь будет отображаться карта -->
+
+
+
+<footer>
+    <p>© 2024 EVcharge. Всі права захищені.</p>
+</footer>
+
 <!-- Подключение Bootstrap JS и jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Подключение JS для карты -->
+<script src="js/map.js"></script>
+
 </body>
 </html>
+
