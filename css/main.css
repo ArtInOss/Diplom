@@ -1,0 +1,159 @@
+/* Общие стили */
+body {
+    background-color: #2b3d4f;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header (верхняя панель) */
+header {
+    background-color: #232f3f;
+    color: #e2b97d; /* Цвет шрифта как в боковом меню */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 80px; /* Высота хедера */
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+header .btn {
+    margin-right: 20px;
+}
+
+/* Логотип в header */
+header img {
+    width: 45px;  /* Увеличим изображение в 1.5 раза */
+    height: 45px;
+    margin-right: 10px;
+}
+/* Логотип EVCharge */
+header .logo-text {
+    font-size: 30px;  /* Увеличиваем текст в два раза */
+    font-weight: bold;
+    color: #e2b97d;  /* Цвет текста, как указано */
+}
+
+/* Sidebar (боковое меню) */
+.sidebar {
+    background-color: #1a262d;
+    height: 100%;
+    position: fixed;
+    top: 80px; /* Боковое меню начинается сразу под хедером */
+    left: 0;
+    width: 250px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+.sidebar a {
+    color: #e2b97d;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+}
+
+/* Иконки в боковой панели */
+.sidebar a .icon-btn {
+    margin-right: 10px;
+}
+
+.sidebar a i {
+    font-size: 22px;
+}
+
+/* Стили для текста EVCharge */
+.sidebar #ev-logo {
+    font-size: 30px; /* Увеличиваем шрифт EVCharge */
+    font-weight: bold;
+    color: #e2b97d;
+    padding-left: 10px;
+}
+
+/* Кнопки в правом верхнем углу */
+@media (min-width: 768px) {
+    .d-flex {
+        flex-direction: row;
+    }
+    .d-flex .btn {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+}
+
+/* Main content (контент) */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f4f6f9;
+    margin-top: 100px; /* Подтягиваем контент к следующей области */
+}
+
+/* Footer */
+footer {
+    background-color: #232f3f;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0; /* Убираем фиксированное положение */
+    }
+    .main-content {
+        margin-left: 0;
+    }
+
+    header {
+        position: static;
+    }
+
+    .d-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .d-flex .btn {
+        margin-bottom: 10px;
+    }
+
+    .sidebar a {
+        font-size: 18px;
+    }
+
+    .sidebar a .icon-btn {
+        margin-right: 8px;
+    }
+
+    /* Сделать кнопки "Выйти" и "Мое местоположение" адаптивными */
+    .sidebar a:hover {
+        background-color: #0056b3;
+    }
+
+    /* Профиль и фильтр */
+    .sidebar a {
+        display: block;
+    }
+}
