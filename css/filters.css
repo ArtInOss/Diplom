@@ -1,0 +1,222 @@
+/* Общие стили для страницы */
+body {
+    background-color: #2b3d4f;
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+.main-content {
+    padding: 20px;
+    margin-left: 250px;
+    margin-top: 100px;  /* добавляем отступ сверху */
+}
+
+.filter-box {
+    background-color: #1a262d;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #e2b97d;
+}
+
+.filter-box h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.connector-container, .manufacturer-container, .power-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.connector, .manufacturer, .power-button {
+    background-color: #2e3d4b;
+    border-radius: 5px;
+    padding: 20px;  /* Увеличиваем пространство внутри кнопок */
+    text-align: center;
+    cursor: pointer;
+    min-width: 80px;  /* Минимальная ширина для кнопок */
+    flex: 1 1 30%;  /* Делаем кнопки адаптивными и распределяем их по контейнеру */
+    height: 80px;
+}
+
+/* Коннекторы - изменения */
+.connector-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between; /* Распределение элементов по контейнеру */
+}
+
+.connector {
+    background-color:  #2e3d4b;;
+    border-radius: 5px;
+    padding: 0; /* Убираем лишние отступы вокруг изображения */
+    text-align: center;
+    cursor: pointer;
+    width: 120px;  /* Уменьшаем ширину блока */
+    height: 190px; /* Увеличиваем высоту блока для большей видимости */
+    flex-shrink: 0; /* Предотвращаем уменьшение ширины */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Учитываем padding и border */
+}
+.connector-img  {
+    width: 30%; /* Ширина изображения на весь блок */
+    height: 160px; /* Высота изображения */
+    margin-bottom: 10px;
+}
+
+
+/* Подсветка выбранных элементов */
+.connector.selected, .manufacturer.selected, .power-button.selected {
+    border: 2px solid #007bff; /* выделение активного выбора */
+}
+
+.connector:hover, .manufacturer:hover, .power-button:hover {
+    background-color: #007bff;
+}
+
+.power-button {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #e2b97d;
+}
+
+.range-slider {
+    width: 100%;
+}
+
+.range-slider:focus {
+    outline: none;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+
+    .filter-box h2 {
+        font-size: 18px;
+    }
+
+    .connector, .manufacturer, .power-button {
+        width: 100px;
+        height: 100px;
+    }
+
+    .connector-img {
+        width: 50px;  /* Уменьшаем ширину коннекторов на маленьких экранах */
+        height: 100px; /* Подгоняем высоту */
+    }
+
+    .manufacturer-img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Увеличение высоты и площади фильтров */
+.filter-box {
+    height: 250px; /* увеличиваем высоту фильтров */
+}
+
+.connector-container, .manufacturer-container {
+    height: 200px; /* Увеличиваем высоту контейнера фильтров */
+    overflow-y: auto; /* Если контента больше, чем помещается, будет прокрутка */
+}
+
+/* Дополнительные стили для новых фильтров */
+#connector-container, #manufacturer-container, #power-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* выравниваем по центру */
+}
+
+#connector-container div, #manufacturer-container div, #power-container div {
+    flex-basis: 25%; /* Устанавливаем для каждого элемента минимальный размер */
+    box-sizing: border-box;
+}
+
+.connector.selected, .manufacturer.selected, .power-button.selected {
+    border: 2px solid #007bff; /* выделение активного выбора */
+}
+
+
+#rangeValue {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
+.range-input {
+    width: 60px;
+    margin-left: 10px;
+    background-color: #2e3d4b;
+    border: 1px solid #e2b97d;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+    height: 30px;
+}
+.manufacturer-container span {
+    font-size: 20px;  /* Увеличиваем размер шрифта */
+    font-weight: bold;  /* Делаем текст жирным */
+    color: #e2b97d;  /* Цвет текста */
+    text-align: center;  /* Выравнивание по центру */
+}
+
+
+.power-container .power-button span {
+    font-size: 20px;  /* Увеличиваем размер шрифта */
+    font-weight: bold;  /* Делаем текст жирным */
+    color: #e2b97d;  /* Цвет текста */
+    text-align: center;  /* Выравнивание по центру */
+}
+.connector-container .connector span {
+
+        display: block;
+        margin-top: -4px;
+        color: #e2b97d; /* Цвет текста */
+        font-size: 20px; /* Размер текста */
+        font-weight: bold;
+
+}
+.range-filter-box span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e2b97d;
+}
+/* Стили для кнопки "Застосувати" */
+.apply-button-container {
+    text-align: center;
+    margin-top: 20px;  /* Отступ сверху */
+}
+
+.apply-button {
+    background-color: #28a745;  /* Зеленый цвет */
+    color: white;  /* Цвет текста */
+    font-size: 18px;
+    padding: 10px 20px;  /* Отступы внутри кнопки */
+    border: none;
+    border-radius: 5px;  /* Скругленные углы */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.apply-button:hover {
+    background-color: #218838;  /* Цвет кнопки при наведении */
+}
