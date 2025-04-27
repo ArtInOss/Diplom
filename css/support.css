@@ -1,0 +1,91 @@
+.support-container {
+    background-color: #2b3d4f;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+    color: #ffffff; /* Белый текст */
+    text-align: center;
+}
+
+.support-title {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #ffffff; /* белый цвет заголовка */
+}
+
+.support-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+.support-icon {
+    font-size: 24px;
+    color: #e2b97d;
+    margin-right: 15px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.support-link {
+    font-size: 20px;
+    color: #ffffff; /* белый текст ссылок */
+    text-decoration: none;
+}
+
+.support-link:hover {
+    text-decoration: underline;
+}
+.main-content {
+    margin-left: 250px; /* Відступ, бо є sidebar */
+    margin-top: 80px; /* Висота хедера */
+    padding: 20px;
+    background-color: #f4f6f9; /* Білий або світлий фон */
+    min-height: calc(100vh - 80px - 50px); /* Висота екрану мінус хедер і футер */
+    box-sizing: border-box;
+}
+@media (max-width: 768px) {
+    .support-container {
+        margin: 20px;
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .support-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .support-icon {
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+
+    .support-link {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .support-button {
+        margin-top: 20px;
+    }
+
+    .support-button .btn {
+        width: 100%;
+        font-size: 18px;
+    }
+}
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* Прибираємо відступ, бо sidebar згортається */
+        margin-top: 80px;
+        padding: 15px;
+        min-height: calc(100vh - 80px - 50px);
+        background-color: #f4f6f9; /* Залишаємо той самий фон */
+    }
+}
