@@ -1,0 +1,58 @@
+/* main-content styles */
+.main-content {
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 120px); /* Висота між хедером і футером */
+    overflow-y: auto; /* Додає прокручування, якщо контент не вміщується */
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.input-group {
+    width: 100%;
+    max-width: 600px; /* Максимальна ширина для великого екрану */
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.input-group input {
+    border-radius: 30px;
+}
+
+.input-group-append {
+    margin-left: 10px;
+}
+
+.table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table td button {
+    margin: 0 5px;
+}
+
+/* Для адаптивного дизайну */
+@media (max-width: 768px) {
+    .input-group {
+        width: 100%;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .table {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

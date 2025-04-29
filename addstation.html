@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додавання зарядної станції</title>
+    <!-- Підключення Bootstrap 4 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Підключення іконок Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <!-- Підключення кастомного стилю -->
+    <link href="css/addStation.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Додати зарядну станцію</h1>
+
+    <form id="addStationForm">
+        <div class="form-group">
+            <label for="power">Потужність (кВт)</label>
+            <input type="number" class="form-control" id="power" placeholder="Введіть потужність" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Адреса</label>
+            <input type="text" class="form-control" id="address" placeholder="Введіть адресу" required>
+        </div>
+
+        <div class="form-group">
+            <label for="connector">Конектори</label>
+            <div class="d-flex align-items-center">
+                <select class="form-control" id="connector" required>
+                    <option>CCS2</option>
+                    <option>GB/T</option>
+                    <option>CHAdeMO</option>
+                </select>
+                <i class="fas fa-plug ml-2"></i>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="manufacturer">Виробник</label>
+            <select class="form-control" id="manufacturer" required>
+                <option>ND</option>
+                <option>ABB</option>
+                <option>Siemens</option>
+                <option>UGV</option>
+                <option>Ecofactor</option>
+                <option>Kostad</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Ціна (грн/кВт-год)</label>
+            <input type="number" class="form-control" id="price" placeholder="Введіть ціну" required>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">Додати ЗС</button>
+    </form>
+
+    <div id="error-message" class="alert alert-danger mt-3" style="display: none;">
+        Усі поля повинні бути заповнені!
+    </div>
+</div>
+
+<!-- Підключення Bootstrap JS та jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Підключення JavaScript для логіки -->
+<script src="js/addstation.js"></script>
+
+</body>
+</html>
