@@ -2,6 +2,7 @@ let map;
 let userMarker;
 let userLocation;
 
+// Функция для инициализации карты
 function initMap() {
     // Инициализация карты
     map = new google.maps.Map(document.getElementById("map"), {
@@ -40,3 +41,10 @@ function initMap() {
         }
     });
 }
+
+// Гарантируем, что функция `initMap` будет вызвана при загрузке страницы
+window.addEventListener('load', function () {
+    if (typeof initMap === 'function') {
+        initMap();  // Инициализация карты при загрузке страницы
+    }
+});
