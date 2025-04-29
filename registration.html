@@ -24,8 +24,18 @@
                 <label for="confirmPassword">Підтвердження пароля</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
             </div>
+
+            <!-- чекбокс -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="privacyCheck" required>
+                <label class="form-check-label" for="privacyCheck">
+                    Я ознайомлений з <a href="public-policy.html" target="_blank">Політикою конфіденційності</a>
+                </label>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-block">Зареєструватися</button>
         </form>
+
         <p class="text-center mt-3">Вже є аккаунт? <a href="authorization.html">Авторизуйтеся</a></p>
     </div>
 </div>
@@ -35,5 +45,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/registration.js"></script>
 </body>
 </html>

@@ -1,20 +1,28 @@
-// Захардкоженные данные для авторизации
+// Захардкожені дані користувачів
 const users = {
-    'user': '1234', // Логин и пароль для успешного входа
+    'user': {
+        password: 'user123',
+        redirect: 'user.html'
+    },
+    'admin': {
+        password: 'admin123',
+        redirect: 'admin.html'
+    }
 };
 
-// Функция для проверки авторизации
+// Обробник форми входу
 document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();  // Предотвращаем отправку формы
+    e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorMessage = document.getElementById('errorMessage');
 
-    // Проверка введенных данных с захардкоженными данными
-    if (users[username] && users[username] === password) {
-        alert('Авторизація успішна!');
-        window.location.href = 'user.html';
+    if (users[username] && users[username].password === password) {
+        // Успішна авторизація
+        window.location.href = users[username].redirect;
     } else {
+        // Помилка: логін або пароль не співпадає
         errorMessage.textContent = "Невірний логін або пароль!";
     }
 });
