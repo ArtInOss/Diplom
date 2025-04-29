@@ -1,0 +1,72 @@
+.policy-container {
+    background-color: #2b3d4f;
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    margin: 40px; /* Рівномірно з усіх сторін */
+    box-sizing: border-box;
+}
+
+/* Заголовки */
+.policy-container h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: white;
+}
+
+.policy-container h2,
+.policy-container h3 {
+    font-size: 24px;
+    margin-top: 25px;
+    color: #f9f9f9;
+}
+
+/* Текст і списки */
+.policy-container p,
+.policy-container li {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.policy-container ul {
+    padding-left: 20px;
+}
+
+/* Посилання */
+.policy-container a {
+    color: #add8ff;
+    text-decoration: underline;
+}
+
+/* Дата оновлення */
+.policy-container .last-updated {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #cccccc;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .policy-container {
+        width: 95%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .policy-container h1 {
+        font-size: 26px;
+    }
+
+    .policy-container h2 {
+        font-size: 20px;
+    }
+
+    .policy-container p,
+    .policy-container li {
+        font-size: 16px;
+    }
+}
