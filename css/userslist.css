@@ -1,0 +1,36 @@
+/* Стилі для таблиці користувачів */
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #2e3b4e;
+    color: white;
+}
+
+thead.thead-light {
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+/* Стилі для іконок кнопок */
+.btn-warning i,
+.btn-danger i {
+    pointer-events: none;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .table thead {
+        font-size: 14px;
+    }
+    .btn-block {
+        width: 100%;
+    }
+}
+.section-title {
+    color: #000;
+}

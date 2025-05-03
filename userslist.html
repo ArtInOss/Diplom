@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список користувачів</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/userslist.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .main-content {
+            min-height: calc(100vh - 120px);
+            padding: 20px;
+        }
+        .user-table thead th {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<header class="d-flex justify-content-between align-items-center p-3">
+    <div class="d-flex align-items-center">
+        <img src="favicon-96x96.png" alt="EVCharge Logo" class="logo mr-2">
+        <span class="logo-text">EVCharge</span>
+    </div>
+    <div class="d-flex flex-column flex-md-row align-items-end">
+        <a href="admin.html" class="btn btn-primary">
+            <i class="fas fa-map icon-btn"></i> Карта
+        </a>
+        <a href="authorization.html">
+            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
+        </a>
+    </div>
+</header>
+
+<div class="d-flex">
+    <div class="sidebar">
+        <a href="admin-profile.html"><i class="fas fa-id-badge icon-btn"></i>Профіль</a>
+        <a href="stations.html"><i class="fas fa-charging-station icon-btn"></i>Зарядні станції</a>
+        <a href="filters.html"><i class="fas fa-users icon-btn"></i>Користувачі</a>
+        <a href="policy.html"><i class="fas fa-shield-alt icon-btn"></i>Політика конфіденційності</a>
+    </div>
+
+    <div class="main-content px-3 px-md-5 py-4 w-100">
+        <h2 class="section-title mb-4">Список користувачів</h2>
+
+        <div class="row mb-3">
+            <div class="col-md-9 col-sm-12 mb-2 mb-md-0">
+                <input type="text" class="form-control" placeholder="Пошук користувача...">
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <button class="btn btn-success btn-block">Додати користувача</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered table-hover w-100">
+                <thead class="thead-light text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Логін</th>
+                    <th>Ім'я</th>
+                    <th>Прізвище</th>
+                    <th>Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>ggtbgb</td>
+                    <td>Ярослав</td>
+                    <td>Калінін</td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm mr-1"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">2</td>
+                    <td>rvrvrrv</td>
+                    <td>Маша</td>
+                    <td>Сологуб</td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm mr-1"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+</div>
+
+<footer class="text-center p-3">
+    <p>© 2024 EVcharge. Всі права захищені.</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
