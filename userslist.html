@@ -8,18 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/userslist.css" rel="stylesheet">
-    <style>
-        body, html {
-            height: 100%;
-        }
-        .main-content {
-            min-height: calc(100vh - 120px);
-            padding: 20px;
-        }
-        .user-table thead th {
-            background-color: #f1f1f1;
-        }
-    </style>
 </head>
 <body>
 
@@ -55,7 +43,7 @@
             </div>
             <div class="col-md-3 col-sm-12">
                 <a href="adduser.html">
-                <button class="btn btn-success btn-block">Додати користувача</button>
+                    <button class="btn btn-success btn-block">Додати користувача</button>
                 </a>
             </div>
         </div>
@@ -71,25 +59,25 @@
                     <th>Дії</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
+                <tbody id="userTableBody">
+                <tr data-id="1">
                     <td class="text-center">1</td>
-                    <td>ggtbgb</td>
-                    <td>Ярослав</td>
-                    <td>Калінін</td>
+                    <td class="login">ggtbgb</td>
+                    <td class="firstName">Ярослав</td>
+                    <td class="lastName">Калінін</td>
                     <td class="text-center">
-                        <button class="btn btn-warning btn-sm mr-1"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-warning btn-sm mr-1" data-toggle="modal" data-target="#editUserModal" onclick="editUser(1, 'ggtbgb', 'Ярослав', 'Калінін')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDeleteUser(1)"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
-                <tr>
+                <tr data-id="2">
                     <td class="text-center">2</td>
-                    <td>rvrvrrv</td>
-                    <td>Маша</td>
-                    <td>Сологуб</td>
+                    <td class="login">rvrvrrv</td>
+                    <td class="firstName">Маша</td>
+                    <td class="lastName">Сологуб</td>
                     <td class="text-center">
-                        <button class="btn btn-warning btn-sm mr-1"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-warning btn-sm mr-1" data-toggle="modal" data-target="#editUserModal" onclick="editUser(2, 'rvrvrrv', 'Маша', 'Сологуб')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDeleteUser(2)"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
                 </tbody>
@@ -97,8 +85,58 @@
         </div>
     </div>
 
+</div>
 
+<!-- Модальне вікно для редагування користувача -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Редагувати користувача</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <div class="form-group">
+                        <label for="editLogin">Логін</label>
+                        <input type="text" class="form-control" id="editLogin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFirstName">Ім'я</label>
+                        <input type="text" class="form-control" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Прізвище</label>
+                        <input type="text" class="form-control" id="editLastName" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Зберегти зміни</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Модальне вікно для видалення користувача -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Видалити користувача?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ви впевнені, що хочете видалити цього користувача?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Відміна</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Видалити</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer class="text-center p-3">
@@ -108,5 +146,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Підключення JS файлу для редагування -->
+<script src="js/userslistEdit.js"></script>
+<script src="js/userslistDelete.js"></script>
+
 </body>
 </html>
