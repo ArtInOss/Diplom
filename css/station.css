@@ -59,14 +59,14 @@ h1 {
 /* Модальне вікно */
 /* Модальне вікно */
 .modal-content {
-    background-color: #333; /* Темный фон */
+    background-color: #2e3b4e; /* Темный фон */
     color: white; /* Белый текст */
     border-radius: 8px; /* Слегка скругленные углы */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тень вокруг модального окна */
 }
 
 .modal-header {
-    background-color: #333; /* Темный фон для заголовка */
+    background-color: #2e3b4e; /* Темный фон для заголовка */
     color: white; /* Белый текст */
     border-bottom: 1px solid #444; /* Легкая линия снизу для разделения */
 }

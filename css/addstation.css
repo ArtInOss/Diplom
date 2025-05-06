@@ -77,7 +77,16 @@ label {
     margin-right: 5px;
 }
 
-/* Адаптивність для малих екранів */
+/* Новые стили для координат */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.d-flex input {
+    margin-bottom: 10px;
+}
+
 @media (max-width: 768px) {
     .form-container {
         padding: 20px;
