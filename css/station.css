@@ -56,3 +56,107 @@ h1 {
         margin-right: 10px;
     }
 }
+/* Модальне вікно */
+/* Модальне вікно */
+.modal-content {
+    background-color: #333; /* Темный фон */
+    color: white; /* Белый текст */
+    border-radius: 8px; /* Слегка скругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тень вокруг модального окна */
+}
+
+.modal-header {
+    background-color: #333; /* Темный фон для заголовка */
+    color: white; /* Белый текст */
+    border-bottom: 1px solid #444; /* Легкая линия снизу для разделения */
+}
+
+/* Стили для кнопок удаления */
+.remove-connector {
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%; /* Кнопка в форме круга */
+    padding: 8px;
+    width: 35px; /* Увеличиваем размер кнопки */
+    height: 35px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Плавный переход для фона и трансформации */
+    margin-left: 10px;
+}
+
+/* При наведении на кнопку удаления */
+.remove-connector:hover {
+    background-color: #c0392b;
+    transform: scale(1.1); /* Легкое увеличение кнопки при наведении */
+}
+
+/* Стили для добавления коннектора */
+#addConnector {
+    background-color: #0066cc;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+/* При наведении на кнопку добавления */
+#addConnector:hover {
+    background-color: #005bb5; /* Темный оттенок синего */
+}
+
+/* Иконка плюса для кнопки добавления */
+#addConnector i {
+    margin-right: 8px; /* Отступ между иконкой и текстом */
+}
+
+/* Стили для кнопки "Зберегти зміни" */
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px; /* Скругленные углы */
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* При наведении на кнопку "Зберегти зміни" */
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Разделение контента по строкам */
+.connector-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Стили для поля ввода коннектора */
+.connector-row .form-control {
+    margin-right: 10px;
+    flex: 1;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 15px;
+    }
+    .connector-row .form-control {
+        font-size: 14px; /* Уменьшаем размер шрифта на мобильных */
+    }
+    .remove-connector {
+        width: 30px;
+        height: 30px;
+        font-size: 14px; /* Уменьшаем размер иконки на мобильных */
+    }
+}
+

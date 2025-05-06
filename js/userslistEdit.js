@@ -1,6 +1,13 @@
-// Функция для заполнения полей модального окна данными пользователя
-function editUser(id, login, firstName, lastName) {
-    // Заполняем поля формы значениями пользователя
+function editUser(id) {
+    // Ищем строку таблицы по ID
+    const userRow = document.querySelector(`tr[data-id='${id}']`);
+
+    // Получаем данные пользователя из таблицы
+    const login = userRow.querySelector('.login').textContent;
+    const firstName = userRow.querySelector('.firstName').textContent;
+    const lastName = userRow.querySelector('.lastName').textContent;
+
+    // Заполняем поля формы в модальном окне
     document.getElementById('editLogin').value = login;
     document.getElementById('editFirstName').value = firstName;
     document.getElementById('editLastName').value = lastName;
@@ -16,16 +23,25 @@ function editUser(id, login, firstName, lastName) {
             lastName: document.getElementById('editLastName').value
         };
 
-        // Находим строку с данным пользователем по его ID
+        // Извлекаем данные о пользователях из localStorage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Находим индекс пользователя по его ID и обновляем данные
+        const index = users.findIndex(user => user.id === id);
+        if (index !== -1) {
+            users[index] = updatedUser; // Обновляем пользователя
+        }
+
+        // Сохраняем обновленные данные в localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Находим строку с данным пользователем по его ID в таблице
         const userRow = document.querySelector(`tr[data-id='${id}']`);
 
         // Обновляем ячейки таблицы с новыми данными
         userRow.querySelector('.login').textContent = updatedUser.login;
         userRow.querySelector('.firstName').textContent = updatedUser.firstName;
         userRow.querySelector('.lastName').textContent = updatedUser.lastName;
-
-        // Логика для обновления данных в БД или в другом месте (по желанию)
-        console.log('Оновлений користувач:', updatedUser);
 
         // Показать уведомление о том, что данные обновлены
         alert('Дані користувача оновлені!');
