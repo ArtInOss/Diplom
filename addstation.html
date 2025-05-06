@@ -24,13 +24,20 @@
             <input type="text" class="form-control" id="address" placeholder="Введіть адресу" required>
         </div>
 
+        <!-- Конектори -->
         <div class="form-group">
-            <label for="connector"><i class="fas fa-plug"></i> Конектори</label>
-            <select class="form-control" id="connector" required>
-                <option>CCS2</option>
-                <option>GB/T</option>
-                <option>CHAdeMO</option>
-            </select>
+            <label for="connectorContainer"><i class="fas fa-plug"></i> Конектори</label>
+            <div id="connectorContainer">
+                <div class="d-flex mb-2 connector-row">
+                    <select class="form-control" required>
+                        <option value="CCS2">CCS2</option>
+                        <option value="GB/T">GB/T</option>
+                        <option value="CHAdeMO">CHAdeMO</option>
+                    </select>
+                    <button type="button" class="btn btn-danger remove-connector ml-2"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="addConnector"><i class="fas fa-plus-circle"></i> Додати конектор</button>
         </div>
 
         <div class="form-group">
@@ -52,7 +59,8 @@
 
         <!-- Добавляем поля для координат -->
         <div class="form-group">
-            <label for="coordinates"><i class="fas fa-map-marked-alt"></i> Координати (Широта/Довгота)</label>
+            <label for="latitude"><i class="fas fa-map-marked-alt"></i> Координати (Широта/Довгота)</label>
+            <label for="longitude"> </label>
             <div class="d-flex">
                 <input type="text" class="form-control" id="latitude" placeholder="Широта" required style="width: 47%; margin-right: 6%;">
                 <input type="text" class="form-control" id="longitude" placeholder="Довгота" required style="width: 47%;">

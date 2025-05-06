@@ -39,7 +39,7 @@ label {
 }
 
 #connector {
-    width: 100%; /* Задаємо ширину для конектора, щоб він був такої ж ширини, як і інші поля */
+    width: 100%;
 }
 
 #connector + .fas {
@@ -77,7 +77,6 @@ label {
     margin-right: 5px;
 }
 
-/* Новые стили для координат */
 .d-flex {
     display: flex;
     justify-content: space-between;
@@ -95,4 +94,89 @@ label {
     h3 {
         font-size: 1.5rem;
     }
+}
+/* Задаємо висоту для кнопки видалення, щоб вона була такою ж, як у інпутів */
+/* Задаємо ширину для кнопки видалення, щоб вона була трохи ширшою */
+.remove-connector {
+    height: 38px; /* Встановлюємо висоту, яка буде відповідати висоті інпуту */
+    width: 40px; /* Ширина кнопки, щоб вона була трохи ширшою */
+    padding: 0; /* Прибираємо зайві відступи */
+    background-color: #e74c3c; /* Червоний колір для кнопки видалення */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center; /* Центруємо іконку по вертикалі */
+    justify-content: center; /* Центруємо іконку по горизонталі */
+    margin-right: 10px; /* Відступ праворуч для кращого вигляду */
+}
+
+/* Зміна кольору кнопки при наведенні */
+.remove-connector:hover {
+    background-color: #c0392b;
+}
+
+/* Оновлення стилю для контейнера з конекторами */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Центруємо всі елементи по вертикалі */
+}
+
+.d-flex input {
+    margin-bottom: 0; /* Виправлення відступу між інпутами */
+}
+
+.d-flex .remove-connector {
+    margin-left: 10px; /* Додаємо відступ між інпутом і кнопкою */
+}
+/* Вирівнювання для контейнера з логотипом */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Вирівнюємо по вертикалі */
+}
+
+/* Вирівнювання логотипу */
+.header-container img {
+    margin-right: 10px; /* Якщо є додатковий відступ праворуч */
+}
+
+/* Висота для кнопки видалення */
+/* Стиль для кнопки видалення */
+/* Стиль для кнопки видалення */
+.remove-connector {
+    height: 40px; /* Встановлюємо висоту кнопки */
+    width: 40px;  /* Ширина кнопки */
+    padding: 0; /* Прибираємо зайві відступи */
+    background-color: #e74c3c; /* Червоний фон */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center; /* Центруємо іконку по горизонталі */
+    align-items: center; /* Центруємо іконку по вертикалі */
+    margin-right: 10px; /* Відступ праворуч */
+    font-size: 20px; /* Трохи збільшуємо розмір іконки */
+}
+
+/* Зміна кольору кнопки при наведенні */
+.remove-connector:hover {
+    background-color: #c0392b;
+}
+
+/* Центруємо елементи в блоках для конекторів */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Центруємо по вертикалі */
+}
+
+/* Прибираємо зайві відступи */
+.d-flex input {
+    margin-bottom: 0;
+}
+
+.d-flex .remove-connector {
+    margin-left: 10px; /* Відступ між інпутом і кнопкою */
 }
