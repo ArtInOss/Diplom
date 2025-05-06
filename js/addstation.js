@@ -9,6 +9,7 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
     let latitude = document.getElementById('latitude').value;
     let longitude = document.getElementById('longitude').value;
 
+    // Перевірка, чи всі поля заповнені
     if (!power || !address || !manufacturer || !price || !latitude || !longitude) {
         document.getElementById('error-message').style.display = 'block';
         return;
@@ -39,9 +40,63 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
         return;
     }
 
+    // Додавання нової станції до локального сховища
+    const newStation = {
+        lat: parseFloat(latitude),
+        lng: parseFloat(longitude),
+        name: `Станція: ${address}`,
+        address: address,
+        connectors: connectors.join(', '),
+        price: `${price} грн/кВт-год`,
+        power: power
+    };
+
+    let stations = JSON.parse(localStorage.getItem('stations')) || []; // Якщо дані є в localStorage, то беремо їх, якщо ні - ініціалізуємо порожній масив
+    stations.push(newStation); // Додаємо нову станцію в масив
+    localStorage.setItem('stations', JSON.stringify(stations)); // Зберігаємо оновлений масив в localStorage
+
+    // Очистити форму після додавання
+    document.getElementById('addStationForm').reset();
+
     // Якщо всі перевірки пройдені
     window.location.href = 'stations.html'; // Перенаправлення на сторінку станцій
 });
+
+// Масив для зберігання станцій (для демонстрації, поки без БД)
+let stations = [];
+
+// Функція для додавання маркера на карту
+function addMarkerToMap(station) {
+    // Перевірка чи карта вже ініціалізована
+    if (typeof map === 'undefined') {
+        alert("Карта ще не ініціалізована!");
+        return;
+    }
+
+    // Додавання маркера для нової станції
+    let marker = new google.maps.Marker({
+        position: { lat: station.lat, lng: station.lng },
+        map: map,
+        title: station.name,
+    });
+
+    // Інформаційне вікно для маркера
+    let infoWindow = new google.maps.InfoWindow({
+        content: `
+            <h4>${station.name}</h4>
+            <p>Адреса: ${station.address}</p>
+            <p>Конектори: ${station.connectors}</p>
+            <p>Ціна: ${station.price}</p>
+        `,
+    });
+
+    marker.addListener("click", function() {
+        infoWindow.open(map, marker);
+    });
+
+    // Додаємо нову станцію в масив
+    stations.push(station);
+}
 
 // Додавання нового конектора
 document.getElementById('addConnector').addEventListener('click', function() {
