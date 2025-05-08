@@ -37,3 +37,9 @@ range.addEventListener('input', function() {
     rangeValue.textContent = value + ' км'; // Обновляем текст на экране
 });
 
+const priceRange = document.getElementById('priceRange');
+const priceValue = document.getElementById('priceValue');
+
+priceRange.addEventListener('input', function() {
+    priceValue.textContent = `до ${priceRange.value} грн/кВт·год`; // Обновляем значение, которое отображается справа от ползунка
+});

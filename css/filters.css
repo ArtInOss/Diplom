@@ -204,6 +204,7 @@ body {
 .apply-button-container {
     text-align: center;
     margin-top: 20px;  /* Отступ сверху */
+    padding-bottom: 50px; /* Убедитесь, что нижний отступ достаточен, чтобы кнопка не перекрывалась */
 }
 
 .apply-button {
@@ -219,4 +220,20 @@ body {
 
 .apply-button:hover {
     background-color: #218838;  /* Цвет кнопки при наведении */
+}
+.price-slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price-slider {
+    width: 80%;
+    margin-right: 10px;
+}
+
+#priceValue {
+    font-size: 16px;
+    color: #e2b97d;
+    font-weight: bold;
 }

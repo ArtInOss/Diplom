@@ -117,8 +117,20 @@
         <input type="number" id="rangeInput" value="200" min="0" max="400" class="range-input">
         <span id="rangeValue">200 км</span>
     </div>
+
+    <!-- Новый фильтр для цены -->
+    <div class="filter-box price-filter-box">
+        <h2>Ціна за кВт·год</h2>
+        <div class="price-slider-container">
+            <input type="range" id="priceRange" min="1" max="22" value="1" step="0.5" class="price-slider">
+            <span id="priceValue">до 1 грн/кВт·год</span> <!-- Отображение значения цены -->
+        </div>
+    </div>
+
     <div class="apply-button-container">
+        <a href="user.html">
         <button class="apply-button">Застосувати</button>
+        </a>
     </div>
 
 </div>
