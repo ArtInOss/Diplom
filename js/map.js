@@ -53,14 +53,17 @@ function initMap() {
         // Виведення інформації про станцію при натисканні на маркер
         let infoWindow = new google.maps.InfoWindow({
             content: `
-        <div style="max-width: 150px; min-width: 150px;">
-          
-            <p style="font-size: 12px; margin: 5px 0; color: black" >Адреса: ${station.address}</p>
-            <p style="font-size: 12px; margin: 5px 0; color: black">Конектори: ${station.connectors}</p>
-            <p style="font-size: 12px; margin: 5px 0; color: black">Ціна: ${station.price}</p>
-            <p style="font-size: 12px; margin: 5px 0; color: black;">Потужність: ${station.power} кВт</p> <!-- Додаємо потужність -->
-            
-        </div>`,
+        <div class="info-window">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lng}" target="_blank" class="route-link">
+                <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
+                <span class="route-text">Побудувати маршрут</span>
+            </a>
+            <p>Адреса: ${station.address}</p>
+            <p>Конектори: ${station.connectors}</p>
+            <p>Ціна: ${station.price}</p>
+            <p>Потужність: ${station.power} кВт</p>
+        </div>
+    `,
         });
 
         marker.addListener("click", function() {

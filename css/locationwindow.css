@@ -1,0 +1,31 @@
+/* mapStyles.css */
+.info-window {
+    max-width: 150px;
+    min-width: 150px;
+    font-size: 12px;
+    color: black;
+}
+
+.info-window .route-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1a73e8; /* Синий цвет */
+}
+
+.info-window .route-link:hover {
+    color: #0c56a1; /* Цвет при наведении */
+}
+
+.info-window .google-map-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.info-window .route-text {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 0;
+}
