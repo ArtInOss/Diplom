@@ -1,8 +1,32 @@
 let currentField = '';
 let isPasswordField = false;
-let passwordValue = 'password123'; // Переменная для хранения текущего реального пароля
+let passwordValue = '••••••••';
 
-// Открытие модалки для обычных полей
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('authToken');
+
+    fetch("http://localhost:8080/api/user/profile", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Не вдалося завантажити профіль");
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById("firstName").innerText = data.firstName || '';
+            document.getElementById("lastName").innerText = data.lastName || '';
+            document.getElementById("login").innerText = data.username || '';
+            document.getElementById("password").innerText = passwordValue;
+        })
+        .catch(error => {
+            alert("⚠️ Помилка: " + error.message);
+            window.location.href = "authorization.html";
+        });
+});
+
 function editField(label, fieldId, iconClass) {
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalTitle').innerText = `${label}:`;
@@ -13,13 +37,12 @@ function editField(label, fieldId, iconClass) {
 
     const textInput = document.getElementById('textInput');
     textInput.value = document.getElementById(fieldId).innerText;
-    textInput.placeholder = label; // Пишем плейсхолдер по полю
+    textInput.placeholder = label;
 
     isPasswordField = false;
     currentField = fieldId;
 }
 
-// Открытие модалки для пароля
 function editPassword(label, iconClass) {
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalTitle').innerText = `${label}:`;
@@ -28,25 +51,19 @@ function editPassword(label, iconClass) {
     document.getElementById('passwordSection').style.display = 'block';
     document.getElementById('textFieldSection').style.display = 'none';
 
-    const modalInput = document.getElementById('modalInput');
-    modalInput.value = '';
-    modalInput.placeholder = 'Новий пароль';
-
-    const confirmPassword = document.getElementById('confirmPassword');
-    confirmPassword.value = '';
-    confirmPassword.placeholder = 'Повторіть пароль';
+    document.getElementById('modalInput').value = '';
+    document.getElementById('confirmPassword').value = '';
 
     isPasswordField = true;
     currentField = 'password';
 }
 
-// Сохраняем изменения
 function saveField() {
     if (isPasswordField) {
         const newPassword = document.getElementById('modalInput').value.trim();
         const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-        if (newPassword === '' || confirmPassword === '') {
+        if (!newPassword || !confirmPassword) {
             alert('Пароль не може бути порожнім!');
             return;
         }
@@ -55,48 +72,54 @@ function saveField() {
             alert('Паролі не співпадають!');
             return;
         }
+
         passwordValue = newPassword;
-        document.getElementById(currentField).innerText = '••••••••';
-    } else {
-        const newValue = document.getElementById('textInput').value.trim();
-
-        // Проверяем только для логина
-        if (currentField === 'login' && newValue === '') {
-            alert('Логін не може бути порожнім!');
-            return;
-        }
-
-        document.getElementById(currentField).innerText = newValue;
+        document.getElementById('password').innerText = '••••••••';
+        alert("🔒 Зміна пароля поки не реалізована.");
+        closeModal();
+        return;
     }
+
+    const newValue = document.getElementById('textInput').value.trim();
+    if (currentField === 'login' && newValue === '') {
+        alert('Логін не може бути порожнім!');
+        return;
+    }
+
+    document.getElementById(currentField).innerText = newValue;
     closeModal();
+
+    const token = localStorage.getItem('authToken');
+    const updatedData = {
+        firstName: document.getElementById("firstName").innerText,
+        lastName: document.getElementById("lastName").innerText,
+        username: document.getElementById("login").innerText
+    };
+
+    fetch("http://localhost:8080/api/user/profile", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(updatedData)
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Не вдалося оновити профіль");
+            return res.text();
+        })
+        .then(msg => {
+            console.log("✅", msg);
+        })
+        .catch(err => {
+            alert("❌ " + err.message);
+        });
 }
-// Закрытие модалки
+
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
 }
 
-// Показать/скрыть пароль на основной странице профиля
 function togglePassword() {
     const passwordField = document.getElementById('password');
-    if (passwordField.innerText === '••••••••') {
-        passwordField.innerText = passwordValue; // Показываем реальный пароль
-    } else {
-        passwordField.innerText = '••••••••';
-    }
-}
-
-// Показать/скрыть пароль в модалке редактирования
-function toggleModalPassword() {
-    const input = document.getElementById('modalInput');
-    const eyeIcon = document.getElementById('eyeIcon');
-
-    if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.classList.remove('fa-eye');
-        eyeIcon.classList.add('fa-eye-slash');
-    } else {
-        input.type = 'password';
-        eyeIcon.classList.remove('fa-eye-slash');
-        eyeIcon.classList.add('fa-eye');
-    }
-}
+    passwordField.innerText = (passwordField.innerText === '••••

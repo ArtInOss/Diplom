@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Основная страница</title>
-    <!-- Подключение Bootstrap 4 -->
+    <title>Основна сторінка</title>
+    <!-- Bootstrap 4 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Подключение иконок Font Awesome -->
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-    <!-- Подключение кастомного стиля -->
+    <!-- Кастомні стилі -->
     <link href="css/main.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
     <script src="js/authcheck.js"></script>
@@ -17,7 +17,6 @@
 
 <header class="d-flex justify-content-between align-items-center p-3">
     <div class="d-flex align-items-center">
-        <!-- Логотип и текст -->
         <img src="favicon-96x96.png" alt="EVCharge Logo" class="logo mr-2">
         <span class="logo-text">EVCharge</span>
     </div>
@@ -26,7 +25,9 @@
             <i class="fas fa-map icon-btn"></i> Карта
         </a>
         <a href="authorization.html">
-            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
+            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2">
+                <i class="fas fa-sign-out-alt icon-btn"></i>Вийти
+            </button>
         </a>
     </div>
 </header>
@@ -35,7 +36,6 @@
     <a href="filters.html"><i class="fas fa-filter icon-btn"></i>Фільтр</a>
     <a href="support.html"><i class="fas fa-headset icon-btn"></i>Підтримка</a>
     <a href="policy.html"><i class="fas fa-shield-alt icon-btn"></i>Політика конфіденційності</a>
-
 </div>
 
 <div class="main-content">
@@ -46,21 +46,21 @@
         <div class="profile-field">
             <i class="fas fa-user icon-field"></i>
             <span class="field-label">Ім'я :</span>
-            <span class="field-value" id="firstName">Іван</span>
+            <span class="field-value" id="firstName"></span>
             <button class="edit-btn" onclick="editField('Ім\'я', 'firstName', 'fa-user')"><i class="fas fa-pen"></i></button>
         </div>
 
         <div class="profile-field">
             <i class="fas fa-user-tag icon-field"></i>
             <span class="field-label">Прізвище :</span>
-            <span class="field-value" id="lastName">Петренко</span>
+            <span class="field-value" id="lastName"></span>
             <button class="edit-btn" onclick="editField('Прізвище', 'lastName', 'fa-user-tag')"><i class="fas fa-pen"></i></button>
         </div>
 
         <div class="profile-field">
             <i class="fas fa-id-badge icon-field"></i>
             <span class="field-label">Логін :</span>
-            <span class="field-value" id="login">ivan123</span>
+            <span class="field-value" id="login"></span>
             <button class="edit-btn" onclick="editField('Логін', 'login', 'fa-id-badge')"><i class="fas fa-pen"></i></button>
         </div>
 
@@ -107,16 +107,16 @@
 
 </div>
 
-
-
 <footer>
-    <p>© 2024 EVcharge. Всі права захищені.</p>
+    <p>© 2024 EVCharge. Всі права захищені.</p>
 </footer>
 
-<!-- Подключение Bootstrap JS и jQuery -->
+<!-- Bootstrap + підтримка -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Скрипти -->
 <script src="js/profile.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="js/authcheck.js"></script>
