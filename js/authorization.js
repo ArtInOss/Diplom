@@ -6,6 +6,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = ''; // очищення повідомлення
 
+    if (!username || !password) {
+        errorMessage.textContent = "Будь ласка, введіть логін і пароль!";
+        return;
+    }
+
     fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: {
@@ -23,7 +28,8 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
             return response.json();
         })
         .then(data => {
-            if (data.success) {
+            if (data.success && data.token) {
+                localStorage.setItem('authToken', data.token);
                 window.location.href = data.redirectUrl;
             } else {
                 errorMessage.textContent = "Невірний логін або пароль!";
@@ -33,4 +39,4 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
             console.error('Помилка авторизації:', error);
             errorMessage.textContent = "Щось пішло не так! Сервер недоступний або сталася помилка.";
         });
-})
+});

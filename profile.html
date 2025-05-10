@@ -11,6 +11,7 @@
     <!-- Подключение кастомного стиля -->
     <link href="css/main.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
+    <script src="js/authcheck.js"></script>
 </head>
 <body>
 
@@ -117,6 +118,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="js/profile.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script src="js/authcheck.js"></script>
+<script>
+    checkAuth(["USER"]);
+</script>
 
 </body>
 </html>
