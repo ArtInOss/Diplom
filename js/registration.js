@@ -2,23 +2,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registrationForm');
 
     form.addEventListener('submit', function (e) {
-        e.preventDefault(); // Спочатку блокуємо стандартну відправку форми
+        e.preventDefault();
 
+        const username = document.getElementById('regUsername').value.trim();
         const password = document.getElementById('regPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        const policyCheckbox = document.getElementById('policyCheckbox');
+        const checkbox = document.getElementById('privacyCheck');
 
-        // Перевірка, чи погодився з політикою конфіденційності
-
-
-        // Перевірка відповідності паролів
+        // Перевірка: паролі збігаються?
         if (password !== confirmPassword) {
-            alert("Паролі не збігаються. Перевірте ще раз.");
+            alert("Паролі не збігаються!");
             return;
         }
 
-        // Якщо все добре — перенаправляємо на user.html
-        window.location.href = 'user.html';
+        // Перевірка: чи погоджено політику?
+        if (!checkbox.checked) {
+            alert("Ви повинні погодитись з політикою конфіденційності.");
+            return;
+        }
+
+        // Надсилаємо запит на бекенд
+        fetch("http://localhost:8080/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+
+                // Якщо успішно — перенаправляємо на логін
+                if (message.includes("Успішна")) {
+                    window.location.href = "authorization.html";
+                }
+            })
+            .catch(error => {
+                console.error("Помилка при реєстрації:", error);
+                alert("Сталася помилка. Спробуйте пізніше.");
+            });
     });
 });
-
