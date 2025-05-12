@@ -122,4 +122,5 @@ function closeModal() {
 
 function togglePassword() {
     const passwordField = document.getElementById('password');
-    passwordField.innerText = (passwordField.innerText === '••••
+    passwordField.innerText = (passwordField.innerText === '••••••••') ? passwordValue : '••••••••';
+}
