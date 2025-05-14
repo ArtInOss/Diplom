@@ -5,23 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
 
         const username = document.getElementById('regUsername').value.trim();
-        const password = document.getElementById('regPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+        const password = document.getElementById('regPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
         const checkbox = document.getElementById('privacyCheck');
 
-        // Перевірка: паролі збігаються?
         if (password !== confirmPassword) {
             alert("Паролі не збігаються!");
             return;
         }
 
-        // Перевірка: чи погоджено політику?
         if (!checkbox.checked) {
             alert("Ви повинні погодитись з політикою конфіденційності.");
             return;
         }
 
-        // Надсилаємо запит на бекенд
         fetch("http://localhost:8080/api/auth/register", {
             method: "POST",
             headers: {
@@ -29,21 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({
                 username: username,
-                password: password
+                password: password,
+                confirmPassword: confirmPassword
             })
         })
-            .then(response => response.text())
-            .then(message => {
-                alert(message);
-
-                // Якщо успішно — перенаправляємо на логін
-                if (message.includes("Успішна")) {
-                    window.location.href = "authorization.html";
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
                 }
             })
-            .catch(error => {
-                console.error("Помилка при реєстрації:", error);
-                alert("Сталася помилка. Спробуйте пізніше.");
+            .catch(err => {
+                alert("❌ Помилка: " + err.message);
             });
     });
 });
