@@ -1,6 +1,5 @@
 let currentField = '';
-let isPasswordField = false;
-let passwordValue = '••••••••';
+let originalValues = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('authToken');
@@ -18,8 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             document.getElementById("firstName").innerText = data.firstName || '';
             document.getElementById("lastName").innerText = data.lastName || '';
-            document.getElementById("login").innerText = data.username || '';
-            document.getElementById("password").innerText = passwordValue;
+            document.getElementById("userLogin").innerText = data.username || '';
+
+            // Зберігаємо оригінальні значення
+            originalValues = {
+                firstName: data.firstName || '',
+                lastName: data.lastName || '',
+                userLogin: data.username || ''
+            };
         })
         .catch(error => {
             alert("⚠️ Помилка: " + error.message);
@@ -32,69 +37,30 @@ function editField(label, fieldId, iconClass) {
     document.getElementById('modalTitle').innerText = `${label}:`;
     document.getElementById('modalIcon').className = `fas ${iconClass}`;
 
-    document.getElementById('passwordSection').style.display = 'none';
-    document.getElementById('textFieldSection').style.display = 'block';
-
     const textInput = document.getElementById('textInput');
     textInput.value = document.getElementById(fieldId).innerText;
     textInput.placeholder = label;
 
-    isPasswordField = false;
     currentField = fieldId;
 }
 
-function editPassword(label, iconClass) {
-    document.getElementById('editModal').style.display = 'block';
-    document.getElementById('modalTitle').innerText = `${label}:`;
-    document.getElementById('modalIcon').className = `fas ${iconClass}`;
-
-    document.getElementById('passwordSection').style.display = 'block';
-    document.getElementById('textFieldSection').style.display = 'none';
-
-    document.getElementById('modalInput').value = '';
-    document.getElementById('confirmPassword').value = '';
-
-    isPasswordField = true;
-    currentField = 'password';
-}
-
 function saveField() {
-    if (isPasswordField) {
-        const newPassword = document.getElementById('modalInput').value.trim();
-        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const textInput = document.getElementById('textInput');
+    const newValue = textInput.value.trim();
+    const oldValue = originalValues[currentField]; // збережене значення
 
-        if (!newPassword || !confirmPassword) {
-            alert('Пароль не може бути порожнім!');
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            alert('Паролі не співпадають!');
-            return;
-        }
-
-        passwordValue = newPassword;
-        document.getElementById('password').innerText = '••••••••';
-        alert("🔒 Зміна пароля поки не реалізована.");
-        closeModal();
-        return;
-    }
-
-    const newValue = document.getElementById('textInput').value.trim();
-    if (currentField === 'login' && newValue === '') {
+    if (currentField === 'userLogin' && newValue === '') {
         alert('Логін не може бути порожнім!');
         return;
     }
 
-    document.getElementById(currentField).innerText = newValue;
-    closeModal();
+    const updatedData = {
+        firstName: currentField === "firstName" ? newValue : document.getElementById("firstName").innerText,
+        lastName: currentField === "lastName" ? newValue : document.getElementById("lastName").innerText,
+        username: currentField === "userLogin" ? newValue : document.getElementById("userLogin").innerText
+    };
 
     const token = localStorage.getItem('authToken');
-    const updatedData = {
-        firstName: document.getElementById("firstName").innerText,
-        lastName: document.getElementById("lastName").innerText,
-        username: document.getElementById("login").innerText
-    };
 
     fetch("http://localhost:8080/api/user/profile", {
         method: "PUT",
@@ -105,22 +71,27 @@ function saveField() {
         body: JSON.stringify(updatedData)
     })
         .then(res => {
-            if (!res.ok) throw new Error("Не вдалося оновити профіль");
+            if (!res.ok) {
+                return res.text().then(msg => {
+                    throw new Error(msg);
+                });
+            }
             return res.text();
         })
         .then(msg => {
+            document.getElementById(currentField).innerText = newValue;
+            originalValues[currentField] = newValue; // оновлюємо збережене значення
+            closeModal();
             console.log("✅", msg);
         })
         .catch(err => {
+            // відкат до старого значення
+            document.getElementById(currentField).innerText = oldValue;
             alert("❌ " + err.message);
+            closeModal();
         });
 }
 
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
-}
-
-function togglePassword() {
-    const passwordField = document.getElementById('password');
-    passwordField.innerText = (passwordField.innerText === '••••••••') ? passwordValue : '••••••••';
 }

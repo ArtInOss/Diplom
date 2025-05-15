@@ -21,9 +21,12 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
             password: password
         })
     })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                // намагаємось зчитати message з JSON
+                const errorData = await response.json().catch(() => null);
+                const message = errorData?.message || "Невідома помилка сервера.";
+                throw new Error(message);
             }
             return response.json();
         })
@@ -32,11 +35,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
                 localStorage.setItem('authToken', data.token);
                 window.location.href = data.redirectUrl;
             } else {
-                errorMessage.textContent = "Невірний логін або пароль!";
+                errorMessage.textContent = data.message || "Невірний логін або пароль!";
             }
         })
         .catch(error => {
             console.error('Помилка авторизації:', error);
-            errorMessage.textContent = "Щось пішло не так! Сервер недоступний або сталася помилка.";
+            errorMessage.textContent = error.message;
         });
 });
