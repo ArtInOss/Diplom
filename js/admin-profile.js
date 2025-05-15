@@ -1,102 +1,91 @@
 let currentField = '';
-let isPasswordField = false;
-let passwordValue = 'password123'; // Переменная для хранения текущего реального пароля
 
-// Открытие модалки для обычных полей
+// Завантаження профілю адміністратора при відкритті сторінки
+window.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('authToken');
+
+    fetch("http://localhost:8080/api/admin/profile", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Не вдалося завантажити профіль адміністратора");
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById("firstName").innerText = data.firstName || '';
+            document.getElementById("lastName").innerText = data.lastName || '';
+            document.getElementById("login").innerText = data.username || '';
+        })
+        .catch(err => {
+            alert("❌ " + err.message);
+            window.location.href = "authorization.html";
+        });
+});
+
 function editField(label, fieldId, iconClass) {
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalTitle').innerText = `${label}:`;
     document.getElementById('modalIcon').className = `fas ${iconClass}`;
 
-    document.getElementById('passwordSection').style.display = 'none';
-    document.getElementById('textFieldSection').style.display = 'block';
-
     const textInput = document.getElementById('textInput');
     textInput.value = document.getElementById(fieldId).innerText;
-    textInput.placeholder = label; // Пишем плейсхолдер по полю
+    textInput.placeholder = label;
 
-    isPasswordField = false;
     currentField = fieldId;
 }
 
-// Открытие модалки для пароля
-function editPassword(label, iconClass) {
-    document.getElementById('editModal').style.display = 'block';
-    document.getElementById('modalTitle').innerText = `${label}:`;
-    document.getElementById('modalIcon').className = `fas ${iconClass}`;
-
-    document.getElementById('passwordSection').style.display = 'block';
-    document.getElementById('textFieldSection').style.display = 'none';
-
-    const modalInput = document.getElementById('modalInput');
-    modalInput.value = '';
-    modalInput.placeholder = 'Новий пароль';
-
-    const confirmPassword = document.getElementById('confirmPassword');
-    confirmPassword.value = '';
-    confirmPassword.placeholder = 'Повторіть пароль';
-
-    isPasswordField = true;
-    currentField = 'password';
-}
-
-// Сохраняем изменения
 function saveField() {
-    if (isPasswordField) {
-        const newPassword = document.getElementById('modalInput').value.trim();
-        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const newValue = document.getElementById('textInput').value.trim();
 
-        if (newPassword === '' || confirmPassword === '') {
-            alert('Пароль не може бути порожнім!');
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            alert('Паролі не співпадають!');
-            return;
-        }
-        passwordValue = newPassword;
-        document.getElementById(currentField).innerText = '••••••••';
-    } else {
-        const newValue = document.getElementById('textInput').value.trim();
-
-        // Проверяем только для логина
-        if (currentField === 'login' && newValue === '') {
-            alert('Логін не може бути порожнім!');
-            return;
-        }
-
-        document.getElementById(currentField).innerText = newValue;
+    if (newValue === '') {
+        alert('Поле не може бути порожнім!');
+        return;
     }
-    closeModal();
+
+    closeModal(); // ховаємо модалку — але DOM не оновлюємо поки що
+
+    const token = localStorage.getItem('authToken');
+    const updatedData = {
+        firstName: document.getElementById("firstName").innerText,
+        lastName: document.getElementById("lastName").innerText,
+        username: document.getElementById("login").innerText
+    };
+
+    // оновлюємо тільки одне поле, яке редагували
+    updatedData[currentField === "login" ? "username" : currentField] = newValue;
+
+    fetch("http://localhost:8080/api/admin/profile", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(updatedData)
+    })
+        .then(async res => {
+            const body = await res.json();
+
+            if (!res.ok) {
+                if (body.errors) {
+                    const messages = Object.values(body.errors).join('\n');
+                    throw new Error(messages);
+                } else {
+                    throw new Error(body.message || "Сталась помилка");
+                }
+            }
+
+            // ✅ Тільки тут оновлюємо DOM після успішного збереження
+            document.getElementById(currentField).innerText = newValue;
+            alert("✅ " + (body.message || "Дані адміністратора оновлено"));
+        })
+        .catch(err => {
+            alert("❌ " + (err.message || "Невідома помилка"));
+        });
 }
-// Закрытие модалки
+
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
-}
-
-// Показать/скрыть пароль на основной странице профиля
-function togglePassword() {
-    const passwordField = document.getElementById('password');
-    if (passwordField.innerText === '••••••••') {
-        passwordField.innerText = passwordValue; // Показываем реальный пароль
-    } else {
-        passwordField.innerText = '••••••••';
-    }
-}
-
-// Показать/скрыть пароль в модалке редактирования
-function toggleModalPassword() {
-    const input = document.getElementById('modalInput');
-    const eyeIcon = document.getElementById('eyeIcon');
-
-    if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.classList.remove('fa-eye');
-        eyeIcon.classList.add('fa-eye-slash');
-    } else {
-        input.type = 'password';
-        eyeIcon.classList.remove('fa-eye-slash');
-        eyeIcon.classList.add('fa-eye');
-    }
 }
