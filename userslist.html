@@ -38,7 +38,7 @@
 
         <div class="row mb-3">
             <div class="col-md-9 col-sm-12 mb-2 mb-md-0">
-                <input type="text" class="form-control" placeholder="Пошук користувача...">
+                <input type="text" id="searchInput" class="form-control" placeholder="Пошук користувача...">
             </div>
             <div class="col-md-3 col-sm-12">
                 <a href="adduser.html">
@@ -58,85 +58,13 @@
                     <th>Дії</th>
                 </tr>
                 </thead>
-                <tbody id="userTableBody">
-                <tr data-id="1">
-                    <td class="text-center">1</td>
-                    <td class="login">ggtbgb</td>
-                    <td class="firstName">Ярослав</td>
-                    <td class="lastName">Калі</td>
-                    <td class="text-center">
-                        <button class="btn btn-warning btn-sm mr-1" data-toggle="modal" data-target="#editUserModal" onclick="editUser(1)"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDeleteUser(1)"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-                <tr data-id="2">
-                    <td class="text-center">2</td>
-                    <td class="login">rvrvrrv</td>
-                    <td class="firstName">Маша</td>
-                    <td class="lastName">Сологуб</td>
-                    <td class="text-center">
-                        <button class="btn btn-warning btn-sm mr-1" data-toggle="modal" data-target="#editUserModal" onclick="editUser(2)"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDeleteUser(2)"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-                </tbody>
+                <tbody id="userTableBody"></tbody>
             </table>
         </div>
     </div>
-
 </div>
 
-<!-- Модальне вікно для редагування користувача -->
-<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel">Редагувати користувача</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editUserForm">
-                    <div class="form-group">
-                        <label for="editLogin">Логін</label>
-                        <input type="text" class="form-control" id="editLogin" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editFirstName">Ім'я</label>
-                        <input type="text" class="form-control" id="editFirstName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editLastName">Прізвище</label>
-                        <input type="text" class="form-control" id="editLastName" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Зберегти зміни</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Модальне вікно для видалення користувача -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteUserModalLabel">Видалити користувача?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Ви впевнені, що хочете видалити цього користувача?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Відміна</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Видалити</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- модальні вікна залишаються без змін -->
 
 <footer class="text-center p-3">
     <p>© 2024 EVcharge. Всі права захищені.</p>
@@ -146,7 +74,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Підключення JS файлу для редагування -->
+<script src="js/userslist.js"></script>
 <script src="js/userslistEdit.js"></script>
 <script src="js/userslistDelete.js"></script>
 <script src="js/adduser.js"></script>

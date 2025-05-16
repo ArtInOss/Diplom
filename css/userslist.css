@@ -40,6 +40,7 @@ body, html {
 .main-content {
     min-height: calc(100vh - 120px);
     padding: 20px;
+    padding-bottom: 100px; /* ключовий момент */
 }
 .user-table thead th {
     background-color: #f1f1f1;
@@ -51,9 +52,13 @@ body, html {
     padding: 30px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
+.table-responsive {
+    margin-bottom: 120px; /* гарантуємо простір під таблицею */
+}
 .modal-header {
     border-bottom: none;
     padding-bottom: 20px;
     text-align: center;
+
 }
+
