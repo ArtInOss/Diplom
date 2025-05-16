@@ -65,6 +65,40 @@
 </div>
 
 <!-- модальні вікна залишаються без змін -->
+<!-- Модальне вікно для редагування користувача -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editUserForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Редагувати користувача</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрити">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editLogin">Логін</label>
+                        <input type="text" class="form-control" id="editLogin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFirstName">Ім’я</label>
+                        <input type="text" class="form-control" id="editFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Прізвище</label>
+                        <input type="text" class="form-control" id="editLastName" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+                    <button type="submit" class="btn btn-success">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <footer class="text-center p-3">
     <p>© 2024 EVcharge. Всі права захищені.</p>

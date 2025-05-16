@@ -1,52 +1,65 @@
+let currentEditingUserId = null;
+
 function editUser(id) {
-    // Ищем строку таблицы по ID
+    currentEditingUserId = id;
+
     const userRow = document.querySelector(`tr[data-id='${id}']`);
+    const login = userRow.querySelector('.login').textContent.trim();
+    const firstName = userRow.querySelector('.firstName').textContent.trim();
+    const lastName = userRow.querySelector('.lastName').textContent.trim();
 
-    // Получаем данные пользователя из таблицы
-    const login = userRow.querySelector('.login').textContent;
-    const firstName = userRow.querySelector('.firstName').textContent;
-    const lastName = userRow.querySelector('.lastName').textContent;
-
-    // Заполняем поля формы в модальном окне
     document.getElementById('editLogin').value = login;
     document.getElementById('editFirstName').value = firstName;
     document.getElementById('editLastName').value = lastName;
+}
 
-    // При нажатии на кнопку "Сохранить изменения"
-    document.getElementById('editUserForm').onsubmit = function (e) {
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("editUserForm");
+
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
+        // clearErrors(); — більше не викликається
+
+        const token = localStorage.getItem("authToken");
 
         const updatedUser = {
-            id: id,
-            login: document.getElementById('editLogin').value,
-            firstName: document.getElementById('editFirstName').value,
-            lastName: document.getElementById('editLastName').value
+            username: document.getElementById("editLogin").value.trim(),
+            firstName: document.getElementById("editFirstName").value.trim(),
+            lastName: document.getElementById("editLastName").value.trim()
         };
 
-        // Извлекаем данные о пользователях из localStorage
-        let users = JSON.parse(localStorage.getItem('users')) || [];
+        fetch(`http://localhost:8080/api/admin/users/${currentEditingUserId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(updatedUser)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(() => {
+                const row = document.querySelector(`tr[data-id='${currentEditingUserId}']`);
+                row.querySelector('.login').textContent = updatedUser.username;
+                row.querySelector('.firstName').textContent = updatedUser.firstName;
+                row.querySelector('.lastName').textContent = updatedUser.lastName;
 
-        // Находим индекс пользователя по его ID и обновляем данные
-        const index = users.findIndex(user => user.id === id);
-        if (index !== -1) {
-            users[index] = updatedUser; // Обновляем пользователя
-        }
-
-        // Сохраняем обновленные данные в localStorage
-        localStorage.setItem('users', JSON.stringify(users));
-
-        // Находим строку с данным пользователем по его ID в таблице
-        const userRow = document.querySelector(`tr[data-id='${id}']`);
-
-        // Обновляем ячейки таблицы с новыми данными
-        userRow.querySelector('.login').textContent = updatedUser.login;
-        userRow.querySelector('.firstName').textContent = updatedUser.firstName;
-        userRow.querySelector('.lastName').textContent = updatedUser.lastName;
-
-        // Показать уведомление о том, что данные обновлены
-        alert('Дані користувача оновлені!');
-
-        // Закрываем модальное окно после сохранения изменений
-        $('#editUserModal').modal('hide');
-    };
-}
+                $('#editUserModal').modal('hide');
+            })
+            .catch(err => {
+                if (err.errors) {
+                    if (err.errors.username) alert(err.errors.username);
+                    if (err.errors.firstName) alert(err.errors.firstName);
+                    if (err.errors.lastName) alert(err.errors.lastName);
+                } else if (err.message) {
+                    alert(err.message);
+                } else {
+                    alert("Сталась помилка при оновленні користувача");
+                }
+            });
+    });
+});
