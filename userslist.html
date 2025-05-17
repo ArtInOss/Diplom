@@ -64,7 +64,6 @@
     </div>
 </div>
 
-<!-- модальні вікна залишаються без змін -->
 <!-- Модальне вікно для редагування користувача -->
 <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -92,7 +91,6 @@
                         <input type="text" class="form-control" id="editLastName">
                         <small class="text-danger" id="errorLastName"></small>
                     </div>
-
                 </div>
                 <div id="updateSuccessMessage" class="alert alert-success text-center d-none" role="alert">
                     Користувача оновлено!
@@ -106,6 +104,28 @@
     </div>
 </div>
 
+<!-- 🆕 Модальне вікно для підтвердження видалення -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Підтвердження видалення</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрити">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                Ви дійсно бажаєте видалити цього користувача?
+                <div class="alert alert-success d-none mt-3" id="deleteSuccessMessage"></div>
+                <div class="alert alert-danger d-none mt-3" id="deleteErrorMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Видалити</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer class="text-center p-3">
     <p>© 2024 EVcharge. Всі права захищені.</p>
