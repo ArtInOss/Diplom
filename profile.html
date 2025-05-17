@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
-    <script src="js/authcheck.js"></script>
 </head>
 <body>
 
@@ -36,7 +35,6 @@
 </div>
 
 <div class="main-content">
-
     <div class="profile-container">
         <h2 class="profile-title">Профіль користувача :</h2>
 
@@ -72,16 +70,17 @@
             <div class="modal-body">
                 <div id="textFieldSection">
                     <input type="text" id="textInput" class="form-control mb-3">
+                    <small class="text-danger" id="errorText"></small>
+                    <small class="text-success" id="successText"></small>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="saveField()">Зберегти</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Відміна</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Закрити</button>
             </div>
         </div>
     </div>
-
 </div>
 
 <footer>

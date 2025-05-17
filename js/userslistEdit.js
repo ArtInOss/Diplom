@@ -16,9 +16,15 @@ function editUser(id) {
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("editUserForm");
 
+    function clearErrors() {
+        document.getElementById("errorLogin").textContent = "";
+        document.getElementById("errorFirstName").textContent = "";
+        document.getElementById("errorLastName").textContent = "";
+    }
+
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-        // clearErrors(); — більше не викликається
+        clearErrors();
 
         const token = localStorage.getItem("authToken");
 
@@ -48,18 +54,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.querySelector('.firstName').textContent = updatedUser.firstName;
                 row.querySelector('.lastName').textContent = updatedUser.lastName;
 
-                $('#editUserModal').modal('hide');
+                showModalSuccessMessage("Користувача оновлено!");
             })
             .catch(err => {
                 if (err.errors) {
-                    if (err.errors.username) alert(err.errors.username);
-                    if (err.errors.firstName) alert(err.errors.firstName);
-                    if (err.errors.lastName) alert(err.errors.lastName);
+                    if (err.errors.username) {
+                        document.getElementById("errorLogin").textContent = err.errors.username;
+                    }
+                    if (err.errors.firstName) {
+                        document.getElementById("errorFirstName").textContent = err.errors.firstName;
+                    }
+                    if (err.errors.lastName) {
+                        document.getElementById("errorLastName").textContent = err.errors.lastName;
+                    }
                 } else if (err.message) {
-                    alert(err.message);
+                    document.getElementById("errorLogin").textContent = err.message;
                 } else {
                     alert("Сталась помилка при оновленні користувача");
                 }
             });
     });
+
+    // Очищення форми, помилок та повідомлення при закритті модалки
+    $('#editUserModal').on('hidden.bs.modal', function () {
+        clearErrors();
+        form.reset();
+        document.getElementById("updateSuccessMessage").classList.add("d-none");
+    });
 });
+
+// Вивід повідомлення прямо в модальному вікні
+function showModalSuccessMessage(text) {
+    const alert = document.getElementById("updateSuccessMessage");
+    alert.textContent = text;
+    alert.classList.remove("d-none");
+
+    setTimeout(() => {
+        $('#editUserModal').modal('hide');
+    }, 1500);
+}

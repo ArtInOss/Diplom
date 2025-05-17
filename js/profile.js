@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("lastName").innerText = data.lastName || '';
             document.getElementById("userLogin").innerText = data.username || '';
 
-            // Зберігаємо оригінальні значення
             originalValues = {
                 firstName: data.firstName || '',
                 lastName: data.lastName || '',
@@ -41,16 +40,24 @@ function editField(label, fieldId, iconClass) {
     textInput.value = document.getElementById(fieldId).innerText;
     textInput.placeholder = label;
 
+    document.getElementById("errorText").textContent = "";
+    document.getElementById("successText").textContent = "";
+
     currentField = fieldId;
 }
 
 function saveField() {
     const textInput = document.getElementById('textInput');
+    const errorText = document.getElementById('errorText');
+    const successText = document.getElementById('successText');
     const newValue = textInput.value.trim();
-    const oldValue = originalValues[currentField]; // збережене значення
+    const oldValue = originalValues[currentField];
+
+    errorText.textContent = "";
+    successText.textContent = "";
 
     if (currentField === 'userLogin' && newValue === '') {
-        alert('Логін не може бути порожнім!');
+        errorText.textContent = 'Логін не може бути порожнім!';
         return;
     }
 
@@ -72,26 +79,41 @@ function saveField() {
     })
         .then(res => {
             if (!res.ok) {
-                return res.text().then(msg => {
-                    throw new Error(msg);
+                return res.json().then(errorData => {
+                    if (errorData.errors) {
+                        const fieldMap = {
+                            userLogin: 'username',
+                            firstName: 'firstName',
+                            lastName: 'lastName'
+                        };
+                        const backendField = fieldMap[currentField];
+                        errorText.textContent = errorData.errors[backendField] || "Невідома помилка";
+                    } else if (errorData.message) {
+                        errorText.textContent = errorData.message;
+                    } else {
+                        errorText.textContent = "Помилка при збереженні.";
+                    }
+                    throw new Error("Validation error");
                 });
             }
             return res.text();
         })
-        .then(msg => {
+        .then(() => {
             document.getElementById(currentField).innerText = newValue;
-            originalValues[currentField] = newValue; // оновлюємо збережене значення
-            closeModal();
-            console.log("✅", msg);
+            originalValues[currentField] = newValue;
+            successText.textContent = "✅ Профіль оновлено!";
+
+            // ⏳ Автоматичне закриття через 1.5 секунди
+            setTimeout(() => {
+                closeModal();
+            }, 1500);
         })
         .catch(err => {
-            // відкат до старого значення
-            document.getElementById(currentField).innerText = oldValue;
-            alert("❌ " + err.message);
-            closeModal();
+            console.warn("Помилка збереження:", err.message);
         });
 }
-
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
+    document.getElementById('errorText').textContent = "";
+    document.getElementById('successText').textContent = "";
 }
