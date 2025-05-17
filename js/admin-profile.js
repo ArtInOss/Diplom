@@ -1,6 +1,5 @@
 let currentField = '';
 
-// Завантаження профілю адміністратора при відкритті сторінки
 window.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('authToken');
 
@@ -29,32 +28,29 @@ function editField(label, fieldId, iconClass) {
     document.getElementById('editModal').style.display = 'block';
     document.getElementById('modalTitle').innerText = `${label}:`;
     document.getElementById('modalIcon').className = `fas ${iconClass}`;
+    document.getElementById('textInput').value = document.getElementById(fieldId).innerText;
+    document.getElementById('textInput').placeholder = label;
 
-    const textInput = document.getElementById('textInput');
-    textInput.value = document.getElementById(fieldId).innerText;
-    textInput.placeholder = label;
-
+    clearMessages();
     currentField = fieldId;
 }
 
 function saveField() {
     const newValue = document.getElementById('textInput').value.trim();
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const token = localStorage.getItem('authToken');
 
-    if (newValue === '') {
-        alert('Поле не може бути порожнім!');
+    if (currentField === 'login' && newValue === '') {
+        errorMessage.textContent = 'Логін не може бути порожнім!';
         return;
     }
 
-    closeModal(); // ховаємо модалку — але DOM не оновлюємо поки що
-
-    const token = localStorage.getItem('authToken');
     const updatedData = {
         firstName: document.getElementById("firstName").innerText,
         lastName: document.getElementById("lastName").innerText,
         username: document.getElementById("login").innerText
     };
-
-    // оновлюємо тільки одне поле, яке редагували
     updatedData[currentField === "login" ? "username" : currentField] = newValue;
 
     fetch("http://localhost:8080/api/admin/profile", {
@@ -67,25 +63,35 @@ function saveField() {
     })
         .then(async res => {
             const body = await res.json();
-
             if (!res.ok) {
                 if (body.errors) {
-                    const messages = Object.values(body.errors).join('\n');
-                    throw new Error(messages);
+                    const msg = Object.values(body.errors).join(', ');
+                    throw new Error(msg);
                 } else {
                     throw new Error(body.message || "Сталась помилка");
                 }
             }
 
-            // ✅ Тільки тут оновлюємо DOM після успішного збереження
             document.getElementById(currentField).innerText = newValue;
-            alert("✅ " + (body.message || "Дані адміністратора оновлено"));
+            errorMessage.textContent = "";
+            successMessage.textContent = "Профіль оновлено успішно!";
+
+            setTimeout(() => {
+                closeModal();
+            }, 1500);
         })
         .catch(err => {
-            alert("❌ " + (err.message || "Невідома помилка"));
+            errorMessage.textContent = err.message || "Невідома помилка";
         });
 }
 
 function closeModal() {
     document.getElementById('editModal').style.display = 'none';
+    document.getElementById('textInput').value = '';
+    clearMessages();
+}
+
+function clearMessages() {
+    document.getElementById('errorMessage').textContent = '';
+    document.getElementById('successMessage').textContent = '';
 }
