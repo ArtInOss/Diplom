@@ -12,12 +12,13 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
 
     const token = localStorage.getItem("authToken");
 
-    // Очистка попередніх повідомлень
-    ["locationName", "power", "address", "price", "latitude", "longitude", "connector"].forEach(field => {
+    // Очищаем все ошибки, включая новый общий блок coordinatesError
+    ["locationName", "power", "address", "price", "latitude", "longitude", "connector", "coordinates"].forEach(field => {
         const errorElement = document.getElementById(field + "Error");
         if (errorElement) errorElement.innerText = "";
     });
 
+    // Проверки на пустые поля и т.д. — оставляем без изменений
     if (!locationName || !power || !address || !manufacturer || !price || !latitude || !longitude) {
         alert("Заповніть усі обов’язкові поля.");
         return;
@@ -86,6 +87,7 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
             if (!res.ok) {
                 if (contentType && contentType.includes("application/json")) {
                     const data = await res.json();
+
                     if (data.errors) {
                         Object.keys(data.errors).forEach(key => {
                             const errorId = key + "Error";
@@ -94,7 +96,24 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
                             }
                         });
                     } else if (data.message) {
-                        document.getElementById("locationNameError").innerText = data.message;
+                        // Обработка ошибки уникальности координат — показываем одну общую ошибку в coordinatesError
+                        if (data.message.toLowerCase().includes("координат") || data.message.toLowerCase().includes("coordinates")) {
+                            const coordError = document.getElementById("coordinatesError");
+                            if (coordError) {
+                                coordError.innerText = data.message;
+                            }
+                            // Очищаем индивидуальные ошибки широты и долготы, чтобы не дублировать
+                            if (document.getElementById("latitudeError")) {
+                                document.getElementById("latitudeError").innerText = "";
+                            }
+                            if (document.getElementById("longitudeError")) {
+                                document.getElementById("longitudeError").innerText = "";
+                            }
+                        } else if (document.getElementById("locationNameError")) {
+                            document.getElementById("locationNameError").innerText = data.message;
+                        } else {
+                            alert(data.message);
+                        }
                     }
                 } else {
                     throw new Error("Сервер повернув не-JSON (наприклад, 403 або 500 без тіла)");
@@ -102,9 +121,12 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
                 return;
             }
 
-            // 🟢 Успішне повідомлення
+            // Успішне повідомлення
             const messageBox = document.getElementById("successMessage");
-            messageBox.classList.remove("d-none");
+            if (messageBox) {
+                messageBox.classList.remove("d-none");
+                messageBox.innerText = "Станцію додано успішно!";
+            }
 
             setTimeout(() => {
                 window.location.href = "stations.html";
@@ -116,7 +138,7 @@ document.getElementById('addStationForm').addEventListener('submit', function(ev
         });
 });
 
-// ➕ Додавання конектора
+// Добавление коннектора — без изменений
 document.getElementById('addConnector').addEventListener('click', function() {
     const connectorContainer = document.getElementById('connectorContainer');
     const newConnector = document.createElement('div');

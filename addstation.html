@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Додати зарядну станцію</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/addstation.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/addstation.css" />
 </head>
 <body>
 
@@ -17,19 +17,19 @@
 
         <div class="form-group">
             <label for="locationName"><i class="fas fa-map-pin"></i> Назва локації</label>
-            <input type="text" class="form-control" id="locationName" required>
+            <input type="text" class="form-control" id="locationName" required />
             <small id="locationNameError" class="form-text text-danger"></small>
         </div>
 
         <div class="form-group">
             <label for="power"><i class="fas fa-bolt"></i> Потужність (кВт)</label>
-            <input type="number" class="form-control" id="power" required>
+            <input type="number" class="form-control" id="power" required />
             <small id="powerError" class="form-text text-danger"></small>
         </div>
 
         <div class="form-group">
             <label for="address"><i class="fas fa-map-marker-alt"></i> Адреса</label>
-            <input type="text" class="form-control" id="address" required>
+            <input type="text" class="form-control" id="address" required />
             <small id="addressError" class="form-text text-danger"></small>
         </div>
 
@@ -63,18 +63,19 @@
 
         <div class="form-group">
             <label for="price"><i class="fas fa-tag"></i> Ціна (грн/кВт-год)</label>
-            <input type="number" class="form-control" id="price" required>
+            <input type="number" class="form-control" id="price" required />
             <small id="priceError" class="form-text text-danger"></small>
         </div>
 
         <div class="form-group">
             <label><i class="fas fa-map-marked-alt"></i> Координати</label>
             <div class="d-flex">
-                <input type="text" class="form-control" id="latitude" placeholder="Широта" required style="width: 47%; margin-right: 6%;">
-                <input type="text" class="form-control" id="longitude" placeholder="Довгота" required style="width: 47%;">
+                <input type="text" class="form-control" id="latitude" placeholder="Широта" required style="width: 47%; margin-right: 6%;" />
+                <input type="text" class="form-control" id="longitude" placeholder="Довгота" required style="width: 47%;" />
             </div>
             <small id="latitudeError" class="form-text text-danger"></small>
             <small id="longitudeError" class="form-text text-danger"></small>
+            <small id="coordinatesError" class="form-text text-danger"></small> <!-- Общая ошибка координат -->
         </div>
 
         <div class="d-flex justify-content-between">
