@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Зарядні станції</title>
-    <!-- Підключення Bootstrap 4 -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Підключення іконок Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-    <!-- Підключення кастомного стилю -->
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/station.css" rel="stylesheet">
+    <!-- Bootstrap 4 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/station.css" rel="stylesheet" />
 </head>
 <body>
 
 <header class="d-flex justify-content-between align-items-center p-3">
     <div class="d-flex align-items-center">
-        <img src="favicon-96x96.png" alt="EVCharge Logo" class="logo mr-2">
+        <img src="favicon-96x96.png" alt="EVCharge Logo" class="logo mr-2" />
         <span class="logo-text">EVCharge</span>
     </div>
-
     <div class="d-flex flex-column flex-md-row align-items-end">
         <a href="admin.html" class="btn btn-primary">
             <i class="fas fa-map icon-btn"></i> Карта
         </a>
         <a href="authorization.html">
-            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
+            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2">
+                <i class="fas fa-sign-out-alt icon-btn"></i>Вийти
+            </button>
         </a>
     </div>
 </header>
@@ -39,10 +39,9 @@
 <div class="main-content">
     <h1 class="text-center mb-4">Зарядні станції</h1>
 
-    <!-- Пошук зарядної станції та кнопка додавання -->
     <div class="d-flex justify-content-between mb-3">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Пошук зарядної станції" id="stationSearch">
+            <input type="text" class="form-control" placeholder="Пошук зарядної станції" id="stationSearch" />
             <div class="input-group-append">
                 <a href="addstation.html">
                     <button class="btn btn-success" id="addStationButton">Додати ЗС</button>
@@ -51,130 +50,22 @@
         </div>
     </div>
 
-    <!-- Таблиця для зарядних станцій -->
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
             <th>Потужність (кВт)</th>
+            <th>Назва локації</th>
             <th>Адреса</th>
             <th>Конектори</th>
-            <th>Виробник</th>
             <th>Ціна (грн/кВт-год)</th>
+            <th>Статус</th>
             <th>Дії</th>
         </tr>
         </thead>
         <tbody id="stationsTable">
-        <tr data-id="1">
-            <td>1</td>
-            <td>250 кВт</td>
-            <td>вул. Незалежності, 10</td>
-            <td>CCS2 | GB/T</td>
-            <td>ABB</td>
-            <td>8 грн/кВт-год</td>
-            <td>
-                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editStationModal" onclick="editStation(1, 250, 'вул. Незалежності, 10', ['CCS2', 'GB/T'], 'ABB', 8, 50.4501, 30.5234)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-sm" onclick="deleteStation(1)"><i class="fas fa-trash-alt"></i></button>
-            </td>
-        </tr>
-        <tr data-id="2">
-            <td>2</td>
-            <td>150 кВт</td>
-            <td>вул. Перемоги, 5</td>
-            <td>CCS2</td>
-            <td>ABB</td>
-            <td>7 грн/кВт-год</td>
-            <td>
-                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editStationModal" onclick="editStation(2, 150, 'вул. Перемоги, 5', ['CCS2'], 'ABB', 7, 50.4505, 30.5186)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-sm" onclick="deleteStation(2)"><i class="fas fa-trash-alt"></i></button>
-            </td>
-        </tr>
         </tbody>
     </table>
-</div>
-
-<!-- Модальне вікно для редагування зарядної станції -->
-<div class="modal fade" id="editStationModal" tabindex="-1" role="dialog" aria-labelledby="editStationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header"  >
-                <h5 class="modal-title" id="editStationModalLabel">Редагувати зарядну станцію</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editStationForm">
-                    <div class="form-group">
-                        <label for="editPower">Потужність (кВт)</label>
-                        <input type="number" class="form-control" id="editPower" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editLatitude">Координати (Широта/Довгота)</label>
-                        <div class="d-flex">
-                            <input type="text" class="form-control" id="editLatitude" placeholder="Широта" step="0.0001" required style="width: 47%; margin-right: 6%;">
-                            <input type="text" class="form-control" id="editLongitude" placeholder="Довгота" step="0.0001" required style="width: 47%;">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="editAddress">Адреса</label>
-                        <input type="text" class="form-control" id="editAddress" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editConnectors">Конектори</label>
-                        <div id="editConnectors">
-                            <div class="connector-row">
-                                <select class="form-control" required>
-                                    <option value="CCS2" selected>CCS2</option>
-                                    <option value="GB/T">GB/T</option>
-                                    <option value="CHAdeMO">CHAdeMO</option>
-                                </select>
-                                <button type="button" class="btn btn-danger remove-connector"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="addConnector"><i class="fas fa-plus-circle"></i> Додати конектор</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="editManufacturer">Виробник</label>
-                        <select class="form-control" id="editManufacturer" required>
-                            <option value="ND">ND</option>
-                            <option value="ABB">ABB</option>
-                            <option value="Siemens">Siemens</option>
-                            <option value="Ecofactor">Ecofactor</option>
-                            <option value="Ugv">Ugv</option>
-                            <option value="Kostad">Kostad</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editTariff">Тариф (грн/кВт-год)</label>
-                        <input type="number" class="form-control" id="editTariff" required>
-                    </div>
-                    <button type="submit" class="btn btn-success btn-block">Зберегти зміни</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Модальне вікно для підтвердження видалення -->
-<div class="modal fade" id="deleteStationModal" tabindex="-1" role="dialog" aria-labelledby="deleteStationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #333; color: white;">
-                <h5 class="modal-title" id="deleteStationModalLabel">Видалити зарядну станцію?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Ви впевнені, що хочете видалити цю зарядну станцію?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Відміна</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Видалити</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <footer>
