@@ -14,19 +14,27 @@
     <h3 class="text-center mb-4"><i class="fas fa-charging-station"></i> Додати зарядну станцію</h3>
 
     <form id="addStationForm">
+
+        <div class="form-group">
+            <label for="locationName"><i class="fas fa-map-pin"></i> Назва локації</label>
+            <input type="text" class="form-control" id="locationName" required>
+            <small id="locationNameError" class="form-text text-danger"></small>
+        </div>
+
         <div class="form-group">
             <label for="power"><i class="fas fa-bolt"></i> Потужність (кВт)</label>
-            <input type="number" class="form-control" id="power" placeholder="Введіть потужність" required>
+            <input type="number" class="form-control" id="power" required>
+            <small id="powerError" class="form-text text-danger"></small>
         </div>
 
         <div class="form-group">
             <label for="address"><i class="fas fa-map-marker-alt"></i> Адреса</label>
-            <input type="text" class="form-control" id="address" placeholder="Введіть адресу" required>
+            <input type="text" class="form-control" id="address" required>
+            <small id="addressError" class="form-text text-danger"></small>
         </div>
 
-        <!-- Конектори -->
         <div class="form-group">
-            <label for="connectorContainer"><i class="fas fa-plug"></i> Конектори</label>
+            <label><i class="fas fa-plug"></i> Конектори</label>
             <div id="connectorContainer">
                 <div class="d-flex mb-2 connector-row">
                     <select class="form-control" required>
@@ -38,6 +46,7 @@
                 </div>
             </div>
             <button type="button" class="btn btn-primary" id="addConnector"><i class="fas fa-plus-circle"></i> Додати конектор</button>
+            <small id="connectorError" class="form-text text-danger"></small>
         </div>
 
         <div class="form-group">
@@ -54,17 +63,18 @@
 
         <div class="form-group">
             <label for="price"><i class="fas fa-tag"></i> Ціна (грн/кВт-год)</label>
-            <input type="number" class="form-control" id="price" placeholder="Введіть ціну" required>
+            <input type="number" class="form-control" id="price" required>
+            <small id="priceError" class="form-text text-danger"></small>
         </div>
 
-        <!-- Добавляем поля для координат -->
         <div class="form-group">
-            <label for="latitude"><i class="fas fa-map-marked-alt"></i> Координати (Широта/Довгота)</label>
-            <label for="longitude"> </label>
+            <label><i class="fas fa-map-marked-alt"></i> Координати</label>
             <div class="d-flex">
                 <input type="text" class="form-control" id="latitude" placeholder="Широта" required style="width: 47%; margin-right: 6%;">
                 <input type="text" class="form-control" id="longitude" placeholder="Довгота" required style="width: 47%;">
             </div>
+            <small id="latitudeError" class="form-text text-danger"></small>
+            <small id="longitudeError" class="form-text text-danger"></small>
         </div>
 
         <div class="d-flex justify-content-between">
@@ -72,6 +82,11 @@
             <button type="submit" class="btn btn-success"><i class="fas fa-plus-circle"></i> Додати</button>
         </div>
     </form>
+
+    <!-- 🟢 Повідомлення про успішне додавання -->
+    <div id="successMessage" class="alert alert-success text-center d-none mt-3">
+        Станцію успішно додано!
+    </div>
 </div>
 
 <script src="js/addstation.js"></script>
