@@ -96,15 +96,16 @@ function clearFieldErrors() {
 function addConnector() {
     const select = document.getElementById('editConnectorSelect');
     const value = select.value;
-    currentConnectors.push(value); // ⬅ без проверки на includes
+    currentConnectors.push(value); // Без ограничений по типу и количеству
     renderConnectors();
 }
 
-
-
 function removeConnector(value) {
-    currentConnectors = currentConnectors.filter(c => c !== value);
-    renderConnectors();
+    const index = currentConnectors.indexOf(value);
+    if (index !== -1) {
+        currentConnectors.splice(index, 1);
+        renderConnectors();
+    }
 }
 
 function renderConnectors() {
@@ -195,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showErrorMessage('Помилка при видаленні станції.');
             })
             .finally(() => stationToDelete = null);
-
     });
 
     document.addEventListener('click', function (e) {
@@ -266,17 +266,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (errors.latitude || errors.longitude) {
                     document.getElementById('errorCoordinates').innerText = `${errors.latitude || ''} ${errors.longitude || ''}`.trim();
                 }
-                if (errors.address && document.getElementById('errorAddress')) {
+                if (errors.address) {
                     document.getElementById('errorAddress').innerText = errors.address;
                 }
-                if (errors.powerKw && document.getElementById('errorPowerKw')) {
+                if (errors.powerKw) {
                     document.getElementById('errorPowerKw').innerText = errors.powerKw;
                 }
-                if (errors.manufacturer && document.getElementById('errorManufacturer')) {
+                if (errors.manufacturer) {
                     document.getElementById('errorManufacturer').innerText = errors.manufacturer;
                 }
 
-                // Обработка ошибок от сервиса
                 if (errors.general) {
                     const msg = errors.general.toLowerCase();
                     if (msg.includes('назвою')) {
