@@ -1,6 +1,7 @@
 let map;
 let userMarker;
 let userLocation;
+let openInfoWindow = null; // Храним открытое окно
 
 window.initMap = function () {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -64,6 +65,7 @@ function loadStations() {
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div class="info-window">
+                            <h5 style="margin-bottom: 10px;">${station.locationName || 'Зарядна станція'}</h5>
                             <a href="https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}" target="_blank" class="route-link">
                                 <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
                                 <span class="route-text">Побудувати маршрут</span>
@@ -77,13 +79,16 @@ function loadStations() {
                 });
 
                 marker.addListener("click", () => {
+                    if (openInfoWindow) {
+                        openInfoWindow.close();
+                    }
                     infoWindow.open(map, marker);
+                    openInfoWindow = infoWindow;
                 });
 
                 markers.push(marker);
             });
 
-            // Кластеризация маркеров
             new MarkerClusterer(map, markers, {
                 imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
             });
