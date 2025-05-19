@@ -65,6 +65,8 @@
     </table>
 </div>
 
+<!-- ФРАГМЕНТ MODAL ОКНА -->
+
 <!-- 🟨 Модалка редагування -->
 <div class="modal fade" id="editStationModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -86,11 +88,13 @@
                     <div class="form-group">
                         <label>Потужність (кВт)</label>
                         <input type="number" class="form-control" id="editPowerKw" required min="1">
+                        <small class="text-danger" id="errorPowerKw"></small>
                     </div>
 
                     <div class="form-group">
                         <label>Адреса</label>
                         <input type="text" class="form-control" id="editAddress" required>
+                        <small class="text-danger" id="errorAddress"></small>
                     </div>
 
                     <div class="form-group">
@@ -110,6 +114,7 @@
                     <div class="form-group">
                         <label>Виробник</label>
                         <input type="text" class="form-control" id="editManufacturer" required>
+                        <small class="text-danger" id="errorManufacturer"></small>
                     </div>
 
                     <div class="form-group">
@@ -117,12 +122,12 @@
                         <input type="number" class="form-control" id="editPricePerKwh" required step="0.01">
                         <small class="text-danger" id="errorPricePerKwh"></small>
                     </div>
+
                     <div class="form-group">
                         <label>Статус</label>
                         <select class="form-control" id="editStatus" required>
                             <option value="ACTIVE">ACTIVE</option>
                             <option value="INACTIVE">INACTIVE</option>
-
                         </select>
                     </div>
 
@@ -143,6 +148,7 @@
         </div>
     </div>
 </div>
+
 
 <footer><p>© 2024 EVcharge. Всі права захищені.</p></footer>
 

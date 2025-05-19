@@ -82,7 +82,10 @@ function clearFieldErrors() {
         'errorLocationName',
         'errorCoordinates',
         'errorConnectors',
-        'errorPricePerKwh'
+        'errorPricePerKwh',
+        'errorAddress',
+        'errorPowerKw',
+        'errorManufacturer'
     ];
     fields.forEach(id => {
         const el = document.getElementById(id);
@@ -93,11 +96,11 @@ function clearFieldErrors() {
 function addConnector() {
     const select = document.getElementById('editConnectorSelect');
     const value = select.value;
-    if (!currentConnectors.includes(value)) {
-        currentConnectors.push(value);
-        renderConnectors();
-    }
+    currentConnectors.push(value); // ⬅ без проверки на includes
+    renderConnectors();
 }
+
+
 
 function removeConnector(value) {
     currentConnectors = currentConnectors.filter(c => c !== value);
@@ -168,7 +171,7 @@ async function extractErrorMessage(response) {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
         const json = await response.json();
-        return json.message || JSON.stringify(json);
+        return JSON.stringify(json);
     }
     return await response.text();
 }
@@ -192,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showErrorMessage('Помилка при видаленні станції.');
             })
             .finally(() => stationToDelete = null);
+
     });
 
     document.addEventListener('click', function (e) {
@@ -237,26 +241,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 showSuccessMessage("Станцію оновлено успішно");
                 loadStations();
             })
-            .catch(err => {
-                const errorText = err.message || 'Невідома помилка';
+            .catch(async err => {
+                let errors = {};
+                try {
+                    const parsed = JSON.parse(err.message || '{}');
+                    if (parsed.validationErrors) {
+                        errors = parsed.validationErrors;
+                    } else if (parsed.message) {
+                        errors = { general: parsed.message };
+                    }
+                } catch (e) {
+                    errors = { general: err.message };
+                }
 
-                if (errorText.includes('назвою')) {
-                    document.getElementById('errorLocationName').innerText = 'Ця назва вже використовується.';
-                } else if (errorText.includes('координатами')) {
-                    document.getElementById('errorCoordinates').innerText = 'Ці координати вже зайняті.';
-                } else if (
-                    errorText.toLowerCase().includes('широта') ||
-                    errorText.toLowerCase().includes('довгота') ||
-                    errorText.toLowerCase().includes('latitude') ||
-                    errorText.toLowerCase().includes('longitude')
-                ) {
-                    document.getElementById('errorCoordinates').innerText = errorText;
-                } else if (errorText.includes('конектор')) {
-                    document.getElementById('errorConnectors').innerText = errorText;
-                } else if (errorText.includes('Ціна') || errorText.includes('Тариф')) {
-                    document.getElementById('errorPricePerKwh').innerText = errorText;
-                } else {
-                    showErrorMessage("Не вдалося оновити станцію. " + errorText);
+                if (errors.locationName) {
+                    document.getElementById('errorLocationName').innerText = errors.locationName;
+                }
+                if (errors.connectors) {
+                    document.getElementById('errorConnectors').innerText = errors.connectors;
+                }
+                if (errors.pricePerKwh) {
+                    document.getElementById('errorPricePerKwh').innerText = errors.pricePerKwh;
+                }
+                if (errors.latitude || errors.longitude) {
+                    document.getElementById('errorCoordinates').innerText = `${errors.latitude || ''} ${errors.longitude || ''}`.trim();
+                }
+                if (errors.address && document.getElementById('errorAddress')) {
+                    document.getElementById('errorAddress').innerText = errors.address;
+                }
+                if (errors.powerKw && document.getElementById('errorPowerKw')) {
+                    document.getElementById('errorPowerKw').innerText = errors.powerKw;
+                }
+                if (errors.manufacturer && document.getElementById('errorManufacturer')) {
+                    document.getElementById('errorManufacturer').innerText = errors.manufacturer;
+                }
+
+                // Обработка ошибок от сервиса
+                if (errors.general) {
+                    const msg = errors.general.toLowerCase();
+                    if (msg.includes('назвою')) {
+                        document.getElementById('errorLocationName').innerText = errors.general;
+                    } else if (msg.includes('координатами') || msg.includes('широта') || msg.includes('довгота')) {
+                        document.getElementById('errorCoordinates').innerText = errors.general;
+                    } else if (msg.includes('конектор')) {
+                        document.getElementById('errorConnectors').innerText = errors.general;
+                    } else {
+                        showErrorMessage("Не вдалося оновити станцію. " + errors.general);
+                    }
                 }
             });
     });
