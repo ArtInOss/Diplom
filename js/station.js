@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         errors = { general: parsed.message };
                     }
                 } catch (e) {
+                
                     errors = { general: err.message };
                 }
 
@@ -290,6 +291,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     });
+    document.getElementById('stationSearch').addEventListener('input', function () {
+        const searchText = this.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('#stationsTable tr');
+
+        rows.forEach(row => {
+            const id = row.cells[0]?.textContent.toLowerCase() || '';
+            const location = row.cells[2]?.textContent.toLowerCase() || '';
+            const address = row.cells[3]?.textContent.toLowerCase() || '';
+
+            const match = id.includes(searchText) ||
+                location.includes(searchText) ||
+                address.includes(searchText);
+
+            row.style.display = match ? '' : 'none';
+        });
+    });
+    
 
     loadStations();
 });
