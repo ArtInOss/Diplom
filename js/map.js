@@ -46,19 +46,18 @@ function loadStations() {
         }
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error("Помилка відповіді сервера");
-            }
+            if (!response.ok) throw new Error("Помилка відповіді сервера");
             return response.json();
         })
         .then(stations => {
+            const markers = [];
+
             stations.forEach(station => {
                 if (!station.latitude || !station.longitude) return;
 
                 const position = { lat: station.latitude, lng: station.longitude };
                 const marker = new google.maps.Marker({
                     position: position,
-                    map: map,
                     title: station.locationName || 'Зарядна станція',
                 });
 
@@ -80,6 +79,13 @@ function loadStations() {
                 marker.addListener("click", () => {
                     infoWindow.open(map, marker);
                 });
+
+                markers.push(marker);
+            });
+
+            // Кластеризация маркеров
+            new MarkerClusterer(map, markers, {
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
             });
         })
         .catch(error => {
@@ -92,4 +98,3 @@ window.addEventListener('load', () => {
         initMap();
     }
 });
-
