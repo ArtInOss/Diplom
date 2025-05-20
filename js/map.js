@@ -37,7 +37,6 @@ window.initMap = function () {
         }
     });
 
-    // 👉 Проверяем: если есть отфильтрованные станции — отображаем их
     const filtered = localStorage.getItem("filteredStations");
     if (filtered) {
         try {
@@ -45,12 +44,57 @@ window.initMap = function () {
             renderStationsOnMap(stations);
         } catch (e) {
             console.warn("Помилка при обробці filteredStations:", e);
-            loadStations(); // fallback
+            loadStations();
         }
     } else {
-        // иначе — загружаем все станции
         setTimeout(loadStations, 3000);
     }
+
+    // 🟩 Показати топ-10 у спливаючому вікні (тільки якщо є в localStorage)
+    // 🟩 Показати топ-10 у спливаючому вікні (тільки якщо є в localStorage)
+    const topStations = localStorage.getItem("topStations");
+    const popup = document.getElementById("topStationsPopup");
+    const toggleBtn = document.getElementById("togglePopup");
+
+    if (topStations && popup && toggleBtn) {
+        popup.style.display = "flex";
+        popup.classList.remove("collapsed");
+        toggleBtn.style.display = "block";
+
+        try {
+            const topList = JSON.parse(topStations);
+            const container = document.getElementById("topStationsList");
+            if (container) {
+                container.innerHTML = '';
+                topList.forEach((s, i) => {
+                    const li = document.createElement("li");
+                    li.classList.add("list-group-item");
+                    li.innerHTML = `
+                    <strong>${i + 1}. ${s.locationName}</strong><br>
+                    ${s.address ?? "-"}<br>
+                    Потужність: ${s.powerKw} кВт<br>
+                    Ціна: ${s.pricePerKwh} грн<br>
+                    Відстань: ${s.distanceKm?.toFixed(1) ?? "?"} км<br>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${s.latitude},${s.longitude}"
+                       target="_blank" class="route-link">
+                        <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
+                        <span class="route-text">Побудувати маршрут</span>
+                    </a>
+                `;
+                    container.appendChild(li);
+                });
+            }
+        } catch (e) {
+            console.warn("Помилка при обробці topStations:", e);
+        }
+
+        // ❌ Удаление убрано!
+        // localStorage.removeItem("topStations");
+    } else {
+        if (popup) popup.style.display = "none";
+        if (toggleBtn) toggleBtn.style.display = "none";
+    }
+
 };
 
 function renderStationsOnMap(stations) {
@@ -115,6 +159,18 @@ function loadStations() {
             console.error('Помилка завантаження станцій для карти:', error.message);
         });
 }
+
+// 🔄 Кнопка сворачивания
+window.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("topStationsPopup");
+    const toggleBtn = document.getElementById("togglePopup");
+    if (popup && toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+            popup.classList.toggle("collapsed");
+            toggleBtn.textContent = popup.classList.contains("collapsed") ? "⮞" : "⮜";
+        });
+    }
+});
 
 window.addEventListener('load', () => {
     if (typeof initMap === 'function') {

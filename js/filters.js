@@ -1,4 +1,4 @@
-// Скрипт для переключения выбранных фильтров
+// Скрипт для переключения выбранных фільтрів
 
 document.querySelectorAll('.connector').forEach(function(connector) {
     connector.addEventListener('click', function() {
@@ -19,7 +19,7 @@ document.querySelectorAll('.power-button').forEach(function(power) {
     });
 });
 
-// Обновление значения запас ходу
+// Обновление значения запасу ходу
 const range = document.getElementById('range');
 const rangeInput = document.getElementById('rangeInput');
 const rangeValue = document.getElementById('rangeValue');
@@ -120,8 +120,13 @@ document.getElementById('applyButton').addEventListener('click', function () {
                     return;
                 }
 
-                const data = JSON.parse(text);
-                localStorage.setItem("filteredStations", JSON.stringify(data));
+                const result = JSON.parse(text);
+
+                // ⬇ Сохраняем все станции и топ-10 по отдельности
+                localStorage.setItem("filteredStations", JSON.stringify(result.allStations));
+                localStorage.setItem("topStations", JSON.stringify(result.topStations));
+
+                // Переход на карту
                 window.location.href = "user.html";
             })
             .catch(error => {

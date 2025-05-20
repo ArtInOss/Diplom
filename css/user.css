@@ -15,3 +15,72 @@
         width: calc(100% - 220px); /* Уменьшаем ширину карты для мобильных устройств */
     }
 }
+
+
+.top-stations-popup {
+    position: fixed;
+    top: 64px; /* высота header */
+    right: 0;
+    width: 350px;
+    bottom: 40px; /* отступ до footer */
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.top-stations-popup.collapsed {
+    transform: translateX(100%);
+}
+
+.popup-content {
+    padding: 15px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+#topStationsList {
+    margin-top: 10px;
+}
+
+.list-group-item {
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    color: black;
+}
+
+.route-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.route-link:hover {
+    text-decoration: underline;
+}
+
+.google-map-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+}
+
+.toggle-button {
+    position: absolute;
+    left: -30px;
+    top: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 8px;
+    z-index: 1000;
+}
