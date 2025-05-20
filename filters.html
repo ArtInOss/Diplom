@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Основная страница</title>
+    <title>Основная сторінка</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
@@ -21,7 +21,7 @@
             <i class="fas fa-map icon-btn"></i> Карта
         </a>
         <a href="authorization.html">
-        <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
+            <button class="btn btn-danger mb-2 mb-md-0 mr-md-2"><i class="fas fa-sign-out-alt icon-btn"></i>Вийти</button>
         </a>
     </div>
 </header>
@@ -30,107 +30,78 @@
     <a href="profile.html"><i class="fas fa-user icon-btn"></i>Профіль</a>
     <a href="support.html"><i class="fas fa-headset icon-btn"></i>Підтримка</a>
     <a href="policy.html"><i class="fas fa-shield-alt icon-btn"></i>Політика конфіденційності</a>
-
 </div>
 
 <div class="main-content">
-    <!-- Конекторы -->
+
+    <!-- Конектори -->
     <div class="filter-box connectors-filter-box">
         <h2>Конектори</h2>
         <div class="connector-container">
             <div class="connector" id="CCS">
                 <img src="img/ccs2.jpg" alt="CCS" class="connector-img">
-                <span>CCS2</span> <!-- Текст под изображением -->
+                <span>CCS2</span>
             </div>
             <div class="connector" id="GBT">
                 <img src="img/gbt.jpg" alt="GBT" class="connector-img">
-                <span>GB/T</span> <!-- Текст под изображением -->
+                <span>GB/T</span>
             </div>
             <div class="connector" id="Chademo">
                 <img src="img/chademo.jpg" alt="Chademo" class="connector-img">
-                <span>Chademo</span> <!-- Текст под изображением -->
+                <span>Chademo</span>
             </div>
         </div>
     </div>
 
-
-    <!-- Производители -->
+    <!-- Виробники -->
     <div class="filter-box manufacturers-filter-box">
         <h2>Виробники</h2>
         <div class="manufacturer-container">
-            <div class="manufacturer" id="ND">
-
-                <span>ND</span>
-            </div>
-            <div class="manufacturer" id="Ugv">
-
-                <span>Ugv</span>
-            </div>
-            <div class="manufacturer" id="Ecofactor">
-
-                <span>Ecofactor</span>
-            </div>
-            <div class="manufacturer" id="ABB">
-
-                <span>ABB</span>
-            </div>
-            <div class="manufacturer" id="Kostad">
-
-                <span>Kostad</span>
-            </div>
-            <div class="manufacturer" id="Siemens">
-
-                <span>Siemens</span>
-            </div>
+            <div class="manufacturer" id="ND"><span>ND</span></div>
+            <div class="manufacturer" id="Ugv"><span>Ugv</span></div>
+            <div class="manufacturer" id="Ecofactor"><span>Ecofactor</span></div>
+            <div class="manufacturer" id="ABB"><span>ABB</span></div>
+            <div class="manufacturer" id="Kostad"><span>Kostad</span></div>
+            <div class="manufacturer" id="Siemens"><span>Siemens</span></div>
         </div>
     </div>
 
-    <!-- Мощность -->
+    <!-- Потужність -->
     <div class="filter-box power-filter-box">
         <h2>Потужність</h2>
         <div class="power-container">
-            <div class="power-button" id="40">
-                <span>40</span>
-            </div>
-            <div class="power-button" id="80">
-                <span>80</span>
-            </div>
-            <div class="power-button" id="120">
-                <span>120</span>
-            </div>
-            <div class="power-button" id="160">
-                <span>160</span>
-            </div>
-            <div class="power-button" id="200">
-                <span>200</span>
-            </div>
-            <div class="power-button" id="240">
-                <span>240</span>
-            </div>
+            <div class="power-button" id="40"><span>40</span></div>
+            <div class="power-button" id="80"><span>80</span></div>
+            <div class="power-button" id="120"><span>120</span></div>
+            <div class="power-button" id="160"><span>160</span></div>
+            <div class="power-button" id="200"><span>200</span></div>
+            <div class="power-button" id="240"><span>240</span></div>
         </div>
+        <div id="errorPower" class="text-danger mt-1" style="display: none;"></div>
     </div>
 
     <!-- Запас ходу -->
     <div class="filter-box range-filter-box">
         <h2>Запас ходу</h2>
-        <input type="range" min="0" max="400" value="200" class="range-slider" id="range">
-        <input type="number" id="rangeInput" value="200" min="0" max="400" class="range-input">
-        <span id="rangeValue">200 км</span>
+        <input type="range" min="0" max="400" value="0" class="range-slider" id="range">
+        <input type="number" id="rangeInput" value="0" min="0" max="400" class="range-input">
+        <span id="rangeValue">0 км</span>
+        <div id="errorRangeKm" class="text-danger mt-1" style="display: none;"></div>
     </div>
 
-    <!-- Новый фильтр для цены -->
+    <!-- Ціна -->
     <div class="filter-box price-filter-box">
         <h2>Ціна за кВт·год</h2>
         <div class="price-slider-container">
-            <input type="range" id="priceRange" min="1" max="22" value="1" step="0.5" class="price-slider">
-            <span id="priceValue">до 1 грн/кВт·год</span> <!-- Отображение значения цены -->
+            <input type="range" id="priceRange" min="0" max="22" value="0" step="0.5" class="price-slider">
+            <span id="priceValue">до 0 грн/кВт·год</span>
         </div>
+        <div id="errorPrice" class="text-danger mt-1" style="display: none;"></div>
     </div>
 
+    <!-- Кнопка -->
     <div class="apply-button-container">
-        <a href="user.html">
-        <button class="apply-button">Застосувати</button>
-        </a>
+        <button class="apply-button" id="applyButton">Застосувати</button>
     </div>
 
 </div>
@@ -138,6 +109,7 @@
 <footer>
     <p>© 2024 EVcharge. Всі права захищені.</p>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

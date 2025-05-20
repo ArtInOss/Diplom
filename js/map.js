@@ -1,7 +1,7 @@
 let map;
 let userMarker;
 let userLocation;
-let openInfoWindow = null; // Храним открытое окно
+let openInfoWindow = null;
 
 window.initMap = function () {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -37,8 +37,66 @@ window.initMap = function () {
         }
     });
 
-    setTimeout(loadStations, 3000);
+    // 👉 Проверяем: если есть отфильтрованные станции — отображаем их
+    const filtered = localStorage.getItem("filteredStations");
+    if (filtered) {
+        try {
+            const stations = JSON.parse(filtered);
+            renderStationsOnMap(stations);
+        } catch (e) {
+            console.warn("Помилка при обробці filteredStations:", e);
+            loadStations(); // fallback
+        }
+    } else {
+        // иначе — загружаем все станции
+        setTimeout(loadStations, 3000);
+    }
 };
+
+function renderStationsOnMap(stations) {
+    if (!stations || stations.length === 0) return;
+
+    const markers = [];
+
+    stations.forEach(station => {
+        if (!station.latitude || !station.longitude) return;
+
+        const position = { lat: station.latitude, lng: station.longitude };
+        const marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: station.locationName || 'Зарядна станція',
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: `
+                <div class="info-window">
+                    <h5 style="margin-bottom: 10px;">${station.locationName || 'Зарядна станція'}</h5>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}" target="_blank" class="route-link">
+                        <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
+                        <span class="route-text">Побудувати маршрут</span>
+                    </a>
+                    <p><strong>Адреса:</strong> ${station.address ?? "-"}</p>
+                    <p><strong>Конектори:</strong> ${station.connectors}</p>
+                    <p><strong>Ціна:</strong> ${station.pricePerKwh ?? "?"} грн/кВт-год</p>
+                    <p><strong>Потужність:</strong> ${station.powerKw} кВт</p>
+                </div>
+            `
+        });
+
+        marker.addListener("click", () => {
+            if (openInfoWindow) openInfoWindow.close();
+            infoWindow.open(map, marker);
+            openInfoWindow = infoWindow;
+        });
+
+        markers.push(marker);
+    });
+
+    new MarkerClusterer(map, markers, {
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+    });
+}
 
 function loadStations() {
     fetch('http://localhost:8080/api/stations', {
@@ -51,47 +109,7 @@ function loadStations() {
             return response.json();
         })
         .then(stations => {
-            const markers = [];
-
-            stations.forEach(station => {
-                if (!station.latitude || !station.longitude) return;
-
-                const position = { lat: station.latitude, lng: station.longitude };
-                const marker = new google.maps.Marker({
-                    position: position,
-                    title: station.locationName || 'Зарядна станція',
-                });
-
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `
-                        <div class="info-window">
-                            <h5 style="margin-bottom: 10px;">${station.locationName || 'Зарядна станція'}</h5>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}" target="_blank" class="route-link">
-                                <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
-                                <span class="route-text">Побудувати маршрут</span>
-                            </a>
-                            <p><strong>Адреса:</strong> ${station.address}</p>
-                            <p><strong>Конектори:</strong> ${station.connectors}</p>
-                            <p><strong>Ціна:</strong> ${station.pricePerKwh} грн/кВт-год</p>
-                            <p><strong>Потужність:</strong> ${station.powerKw} кВт</p>
-                        </div>
-                    `
-                });
-
-                marker.addListener("click", () => {
-                    if (openInfoWindow) {
-                        openInfoWindow.close();
-                    }
-                    infoWindow.open(map, marker);
-                    openInfoWindow = infoWindow;
-                });
-
-                markers.push(marker);
-            });
-
-            new MarkerClusterer(map, markers, {
-                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-            });
+            renderStationsOnMap(stations);
         })
         .catch(error => {
             console.error('Помилка завантаження станцій для карти:', error.message);
