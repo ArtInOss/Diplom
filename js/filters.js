@@ -7,37 +7,36 @@ function showNotification(message) {
     }
 }
 
-document.querySelectorAll('.connector').forEach(function(connector) {
-    connector.addEventListener('click', function() {
+document.querySelectorAll('.connector').forEach(function (connector) {
+    connector.addEventListener('click', function () {
         this.classList.toggle('selected');
     });
 });
 
-document.querySelectorAll('.manufacturer').forEach(function(manufacturer) {
-    manufacturer.addEventListener('click', function() {
+document.querySelectorAll('.manufacturer').forEach(function (manufacturer) {
+    manufacturer.addEventListener('click', function () {
         this.classList.toggle('selected');
     });
 });
 
-document.querySelectorAll('.power-button').forEach(function(power) {
-    power.addEventListener('click', function() {
+document.querySelectorAll('.power-button').forEach(function (power) {
+    power.addEventListener('click', function () {
         document.querySelectorAll('.power-button').forEach(btn => btn.classList.remove('selected'));
         this.classList.add('selected');
     });
 });
 
-// Обновление значения запасу ходу
 const range = document.getElementById('range');
 const rangeInput = document.getElementById('rangeInput');
 const rangeValue = document.getElementById('rangeValue');
 
-rangeInput.addEventListener('input', function() {
+rangeInput.addEventListener('input', function () {
     const value = rangeInput.value;
     range.value = value;
     rangeValue.textContent = value + ' км';
 });
 
-range.addEventListener('input', function() {
+range.addEventListener('input', function () {
     const value = range.value;
     rangeInput.value = value;
     rangeValue.textContent = value + ' км';
@@ -46,11 +45,9 @@ range.addEventListener('input', function() {
 const priceRange = document.getElementById('priceRange');
 const priceValue = document.getElementById('priceValue');
 
-priceRange.addEventListener('input', function() {
+priceRange.addEventListener('input', function () {
     priceValue.textContent = `до ${priceRange.value} грн/кВт·год`;
 });
-
-// Обработка фильтрации
 
 document.getElementById('applyButton').addEventListener('click', function () {
     document.getElementById('errorPower').style.display = 'none';
@@ -145,6 +142,16 @@ document.getElementById('applyButton').addEventListener('click', function () {
                     showNotification("Не вдалося знайти станції за вказаними критеріями.");
                     return;
                 }
+
+                // 💾 Сохраняем все данные для SSE
+                localStorage.setItem("userLat", userLat);
+                localStorage.setItem("userLng", userLng);
+                localStorage.setItem("rangeKm", rangeKm.toString());
+                localStorage.setItem("connectors", JSON.stringify(connectors));
+                localStorage.setItem("manufacturers", JSON.stringify(manufacturers));
+                localStorage.setItem("minPower", minPower.toString());
+                localStorage.setItem("maxPricePerKwh", maxPricePerKwh.toString());
+                localStorage.setItem("lastFilterRequest", JSON.stringify(filterData));
 
                 localStorage.setItem("filteredStations", JSON.stringify(result.allStations));
                 localStorage.setItem("topStations", JSON.stringify(result.topStations));

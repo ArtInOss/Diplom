@@ -1,7 +1,9 @@
+
 let map;
 let userMarker;
 let userLocation;
 let openInfoWindow = null;
+let mapMarkers = [];
 
 // ❗ Очистить topStations если пользователь не перешёл с filters.html
 window.addEventListener('load', () => {
@@ -49,12 +51,11 @@ window.initMap = function () {
         }
     });
 
-    // Отображение всех станций
     const filtered = localStorage.getItem("filteredStations");
     if (filtered) {
         try {
             const stations = JSON.parse(filtered);
-            renderStationsOnMap(stations);
+            updateMapWithStations(stations);
         } catch (e) {
             console.warn("Помилка при обробці filteredStations:", e);
             loadStations();
@@ -63,54 +64,27 @@ window.initMap = function () {
         setTimeout(loadStations, 3000);
     }
 
-    // ✅ Показываем топ-5 станций (если есть)
     const topStations = localStorage.getItem("topStations");
-    const popup = document.getElementById("topStationsPopup");
-    const toggleBtn = document.getElementById("togglePopup");
+    const referrer = document.referrer;
 
-    if (topStations && popup && toggleBtn) {
-        popup.style.display = "flex";
-        popup.classList.remove("collapsed");
-        toggleBtn.style.display = "block";
-
+    if (topStations && referrer.includes("filters.html")) {
         try {
-            const topList = JSON.parse(topStations);
-            const container = document.getElementById("topStationsList");
-            if (container) {
-                container.innerHTML = '';
-                topList.forEach((s, i) => {
-                    const li = document.createElement("li");
-                    li.classList.add("list-group-item");
-                    li.innerHTML = `
-                        <strong>${i + 1}. ${s.locationName}</strong><br>
-                        ${s.address ?? "-"}<br>
-                        Потужність: ${s.powerKw} кВт<br>
-                        Ціна: ${s.pricePerKwh} грн<br>
-                        Відстань: ${s.distanceKm?.toFixed(1) ?? "?"} км<br>
-                        Конектори: ${s.connectors}<br>
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.latitude},${s.longitude}"
-                           target="_blank" class="route-link">
-                            <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
-                            <span class="route-text">Побудувати маршрут</span>
-                        </a>
-                    `;
-                    container.appendChild(li);
-                });
-            }
+            updateTopStationsSidebar(JSON.parse(topStations));
         } catch (e) {
             console.warn("Помилка при обробці topStations:", e);
         }
-
     } else {
+        const popup = document.getElementById("topStationsPopup");
+        const toggleBtn = document.getElementById("togglePopup");
         if (popup) popup.style.display = "none";
         if (toggleBtn) toggleBtn.style.display = "none";
     }
+
 };
 
-function renderStationsOnMap(stations) {
-    if (!stations || stations.length === 0) return;
-
-    const markers = [];
+function updateMapWithStations(stations) {
+    mapMarkers.forEach(marker => marker.setMap(null));
+    mapMarkers = [];
 
     stations.forEach(station => {
         if (!station.latitude || !station.longitude) return;
@@ -144,15 +118,53 @@ function renderStationsOnMap(stations) {
             openInfoWindow = infoWindow;
         });
 
-        markers.push(marker);
+        mapMarkers.push(marker);
     });
 
-    new MarkerClusterer(map, markers, {
+    new MarkerClusterer(map, mapMarkers, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
     });
 }
 
-// 🔄 Кнопка сворачивания
+function updateTopStationsSidebar(topStations) {
+    const container = document.getElementById("topStationsList");
+    const popup = document.getElementById("topStationsPopup");
+    const toggleBtn = document.getElementById("togglePopup");
+
+    if (!container || !popup || !toggleBtn) return;
+
+    if (!topStations || topStations.length === 0) {
+        popup.style.display = "none";
+        toggleBtn.style.display = "none";
+        return;
+    }
+
+    popup.style.display = "flex";
+    popup.classList.remove("collapsed");
+    toggleBtn.style.display = "block";
+    toggleBtn.textContent = "⮜";
+
+    container.innerHTML = '';
+    topStations.forEach((s, i) => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item");
+        li.innerHTML = `
+            <strong>${i + 1}. ${s.locationName}</strong><br>
+            ${s.address ?? "-"}<br>
+            Потужність: ${s.powerKw} кВт<br>
+            Ціна: ${s.pricePerKwh} грн<br>
+            Відстань: ${s.distanceKm?.toFixed(1) ?? "?"} км<br>
+            Конектори: ${s.connectors}<br>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${s.latitude},${s.longitude}"
+               target="_blank" class="route-link">
+                <img src="logos/googlemapslogo.png" alt="Google Maps" class="google-map-icon" />
+                <span class="route-text">Побудувати маршрут</span>
+            </a>
+        `;
+        container.appendChild(li);
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     const popup = document.getElementById("topStationsPopup");
     const toggleBtn = document.getElementById("togglePopup");
@@ -162,21 +174,43 @@ window.addEventListener("DOMContentLoaded", () => {
             toggleBtn.textContent = popup.classList.contains("collapsed") ? "⮞" : "⮜";
         });
     }
+
     window.loadStations = function () {
         fetch('http://localhost:8080/api/stations', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('authToken')
             }
         })
-            .then(response => {
-                if (!response.ok) throw new Error("Помилка відповіді сервера");
-                return response.json();
+            .then(response => response.json())
+            .then(stations => updateMapWithStations(stations))
+            .catch(error => console.error('Помилка завантаження станцій для карти:', error.message));
+    };
+
+    // ✅ Подключение к SSE и автообновление данных
+    const eventSource = new EventSource("http://localhost:8080/api/sse/updates");
+    eventSource.onmessage = function () {
+        console.log("🔄 Отримано оновлення станцій через SSE");
+
+        const filterRequest = localStorage.getItem("lastFilterRequest");
+        if (!filterRequest) return;
+
+        fetch("http://localhost:8080/api/stations/filter", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("authToken"),
+            },
+            body: filterRequest,
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                const allStations = data.allStations || [];
+                const topStations = data.topStations || [];
+                updateMapWithStations(allStations);
+                updateTopStationsSidebar(topStations);
+                localStorage.setItem("filteredStations", JSON.stringify(allStations));
+                localStorage.setItem("topStations", JSON.stringify(topStations));
             })
-            .then(stations => {
-                renderStationsOnMap(stations);
-            })
-            .catch(error => {
-                console.error('Помилка завантаження станцій для карти:', error.message);
-            });
+            .catch(err => console.error("Помилка SSE обробки:", err.message));
     };
 });
