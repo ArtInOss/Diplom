@@ -1,4 +1,11 @@
-// Скрипт для переключения выбранных фільтрів
+function showNotification(message) {
+    const notif = document.getElementById('notification');
+    if (notif) {
+        notif.innerText = message;
+        notif.style.display = 'block';
+        setTimeout(() => notif.style.display = 'none', 4000);
+    }
+}
 
 document.querySelectorAll('.connector').forEach(function(connector) {
     connector.addEventListener('click', function() {
@@ -46,7 +53,6 @@ priceRange.addEventListener('input', function() {
 // Обработка фильтрации
 
 document.getElementById('applyButton').addEventListener('click', function () {
-    // Очистка сообщений об ошибках
     document.getElementById('errorPower').style.display = 'none';
     document.getElementById('errorPrice').style.display = 'none';
     document.getElementById('errorRangeKm').style.display = 'none';
@@ -103,34 +109,50 @@ document.getElementById('applyButton').addEventListener('click', function () {
         })
             .then(async response => {
                 const text = await response.text();
+
                 if (!response.ok) {
-                    const errors = JSON.parse(text);
-                    if (errors.minPower) {
-                        document.getElementById('errorPower').textContent = errors.minPower;
-                        document.getElementById('errorPower').style.display = 'block';
+                    try {
+                        const errors = JSON.parse(text);
+                        if (errors.minPower) {
+                            document.getElementById('errorPower').textContent = errors.minPower;
+                            document.getElementById('errorPower').style.display = 'block';
+                        }
+                        if (errors.rangeKm) {
+                            document.getElementById('errorRangeKm').textContent = errors.rangeKm;
+                            document.getElementById('errorRangeKm').style.display = 'block';
+                        }
+                        if (errors.maxPricePerKwh) {
+                            document.getElementById('errorPrice').textContent = errors.maxPricePerKwh;
+                            document.getElementById('errorPrice').style.display = 'block';
+                        }
+                        if (errors.message) {
+                            showNotification(errors.message);
+                        }
+                    } catch (e) {
+                        showNotification("Не вдалося знайти в станцію по обраним критеріям.");
                     }
-                    if (errors.rangeKm) {
-                        document.getElementById('errorRangeKm').textContent = errors.rangeKm;
-                        document.getElementById('errorRangeKm').style.display = 'block';
-                    }
-                    if (errors.maxPricePerKwh) {
-                        document.getElementById('errorPrice').textContent = errors.maxPricePerKwh;
-                        document.getElementById('errorPrice').style.display = 'block';
-                    }
+                    return;
+                }
+
+                if (!text) {
+                    showNotification("Не вдалося знайти станції за вказаними критеріями.");
                     return;
                 }
 
                 const result = JSON.parse(text);
 
-                // ⬇ Сохраняем все станции и топ-10 по отдельности
+                if (!result.allStations || result.allStations.length === 0) {
+                    showNotification("Не вдалося знайти станції за вказаними критеріями.");
+                    return;
+                }
+
                 localStorage.setItem("filteredStations", JSON.stringify(result.allStations));
                 localStorage.setItem("topStations", JSON.stringify(result.topStations));
 
-                // Переход на карту
                 window.location.href = "user.html";
             })
             .catch(error => {
-                alert("Помилка при завантаженні станцій: " + error.message);
+                showNotification("Помилка при завантаженні станцій: " + error.message);
                 console.error(error);
             });
     });
