@@ -1,28 +1,37 @@
-// authcheck.js — підключати на захищених сторінках
-
-function checkAuth(allowedRoles = []) {
-    const token = localStorage.getItem('authToken');
+function checkAuth(allowedRoles) {
+    const token = localStorage.getItem("authToken");
 
     if (!token) {
-        window.location.href = "/authorization.html";
+        redirectToLogin();
         return;
     }
 
-    try {
-        const decodedToken = jwt_decode(token);
-        const role = decodedToken.role;
-
-        if (!allowedRoles.includes(role)) {
-            window.location.href = "/authorization.html";
+    fetch("http://localhost:8080/api/auth/check", {
+        headers: {
+            "Authorization": "Bearer " + token
         }
-
-    } catch (e) {
-        console.error("JWT decode error:", e);
-        window.location.href = "/authorization.html";
-    }
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Unauthorized");
+            }
+            return res.json();
+        })
+        .then(data => {
+            const userRoles = data.roles || [];
+            const hasAccess = userRoles.some(role => allowedRoles.includes(role));
+            if (!hasAccess) {
+                redirectToLogin();
+            }
+            // Тут можна показати username на сторінці, якщо потрібно:
+            // document.getElementById("usernameLabel").textContent = data.username;
+        })
+        .catch(() => {
+            redirectToLogin();
+        });
 }
 
-function logout() {
-    localStorage.removeItem('authToken');
+function redirectToLogin() {
+    localStorage.removeItem("authToken");
     window.location.href = "/authorization.html";
 }

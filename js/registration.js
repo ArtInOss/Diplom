@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("errorConfirmPassword").textContent = "";
     }
 
-    function showSuccessMessage(message) {
+    function showSuccessMessage(message, redirectUrl) {
         const alert = document.createElement("div");
         alert.className = "alert alert-success position-fixed shadow";
         alert.style.top = "20px";
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(() => {
             alert.remove();
-            window.location.href = "/authorization.html"; // 🔁 редирект
+            window.location.href = redirectUrl || "/authorization.html";
         }, 1500);
     }
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return data;
             }))
             .then(data => {
-                showSuccessMessage(data.message || "Реєстрація успішна!");
+                showSuccessMessage(data.message || "Реєстрація успішна!", data.redirectUrl);
             })
             .catch(err => {
                 if (err.message) {
